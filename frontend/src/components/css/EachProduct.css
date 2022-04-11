@@ -61,3 +61,26 @@
   font-size: 13px !important;
   display: block !important;
 }
+
+/* Address Modal CSS */
+
+.react-responsive-modal-closeButton {
+  left: 14px;
+  color: var(--icon-color);
+  width: fit-content;
+}
+.react-responsive-modal-modal {
+  border-radius: 10px;
+  padding: 0 !important;
+  margin: 0;
+}
+.address_modal {
+  box-sizing: border-box;
+  width: 660px;
+  height: 540px;
+  border-radius: 15px !important;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 25px;
+  box-sizing: border-box;
+}

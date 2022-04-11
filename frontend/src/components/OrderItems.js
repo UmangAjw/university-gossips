@@ -41,11 +41,11 @@ function OrderItems(props) {
         </div>
         <div className="order_items_right">
           <NavLink
+            end
             className={"allproduct_all_items_link"}
             to={
-              "/product/" + props.productDetails
-                ? props.productDetails.slug
-                : ""
+              "/product/" +
+              (props.productDetails ? props.productDetails.slug : "")
             }
             target="_top"
           >

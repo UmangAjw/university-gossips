@@ -6,10 +6,14 @@ import axios from "axios";
 import "./css/EachProduct.css";
 import { Button } from "@material-ui/core";
 import RedeemShopSidebar from "./RedeemShopSidebar";
+import Modal from "react-responsive-modal";
+import CloseIcon from "@material-ui/icons/Close";
 
 function EachProduct() {
   const user = useSelector(selectUser);
   const [eachProduct, setEachProduct] = useState();
+  const [isModalOpen, setisModalOpen] = useState(false);
+  const close = <CloseIcon />;
   const { slug } = useParams();
   const isMounted = true;
   const [userDetails, setUserDetails] = useState([]);
@@ -41,6 +45,7 @@ function EachProduct() {
     return () => {
       setUserDetails([]);
       setEachProduct();
+      setisModalOpen(false);
     };
   }, []);
 
@@ -142,11 +147,22 @@ function EachProduct() {
               {eachProduct ? eachProduct[0].productPrice : ""}
             </p>
           </div>
-          <Button onClick={handleOrder} className="each_product_btn">
+          <Button
+            onClick={() => setisModalOpen(true)}
+            className="each_product_btn"
+          >
             Get this product!
           </Button>
         </div>
       </div>
+      <Modal
+        open={isModalOpen}
+        onClose={() => setisModalOpen(false)}
+        closeIcon={close}
+        center
+      >
+        <div className="address_modal"></div>
+      </Modal>
     </div>
   );
 }
