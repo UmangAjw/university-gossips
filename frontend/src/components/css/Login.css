@@ -1,0 +1,190 @@
+@import url("https://fonts.googleapis.com/css2?family=Merriweather:wght@900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Comfortaa&display=swap");
+
+.login-wrapper {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  user-select: select;
+}
+.login-bg {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.login-box {
+  box-sizing: border-box;
+  background-color: white;
+  width: 650px;
+  height: 450px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 5px;
+}
+.login-upper {
+  padding: 0px 25px 0px 25px;
+
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.uGossips-logo {
+  font-family: "Merriweather", serif;
+
+  cursor: pointer;
+  font-weight: 800;
+  color: var(--quora-color);
+  opacity: 1;
+  font-size: 52px;
+  user-select: none;
+  pointer-events: none;
+  padding: var(--icon-padding);
+  margin-bottom: 5px;
+}
+
+.uGossips-caption {
+  color: rgb(66, 66, 66);
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 40px;
+}
+.login-left-right {
+  display: flex;
+  flex-direction: row;
+}
+.login-left {
+  width: 50%;
+}
+.login-google,
+.login-facebook {
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  margin-bottom: 10px;
+  vertical-align: middle;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.login-google:hover,
+.login-facebook:hover {
+  background-color: var(--hover-color);
+}
+.google-logo,
+.facebook-logo {
+  vertical-align: top;
+  margin: 0;
+  padding: 0;
+  height: 20px;
+  width: 20px;
+  object-fit: contain;
+}
+.login-terms {
+  color: var(--icon-color);
+  font-size: 14px;
+}
+.login-terms-tos:hover,
+.login-terms-privacy:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.login-seperator {
+  height: 100%;
+  border-left: 1px solid var(--border-color);
+  margin: 0px 20px;
+}
+.login-right {
+  width: 50%;
+}
+.login-label {
+  font-weight: 500;
+}
+.horizontal-seperator {
+  width: 100%;
+  border-top: 1px solid var(--border-color);
+  margin: 10px 0px;
+}
+.login-field-label {
+  font-size: 13px;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 5px;
+}
+.login-email,
+.login-pwd {
+  margin-bottom: 15px;
+}
+#ugossips_email,
+#ugossips_pwd {
+  padding: 10px;
+  font-size: 16px;
+  box-sizing: border-box;
+  width: 100%;
+  outline: none;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+}
+#ugossips_email:focus,
+#ugossips_pwd:focus {
+  border-color: var(--link-color) !important;
+}
+.email-error,
+.pwd-error {
+  color: red;
+  font-size: 13px;
+  display: inline;
+}
+.login-forget {
+  color: var(--link-color);
+}
+.login-btn {
+  text-transform: initial !important;
+  padding: 3px 25px !important;
+  border-radius: 25px !important;
+  background-color: var(--link-color) !important;
+  color: white !important;
+  font-size: 16px !important;
+}
+.login-right-last {
+  display: flex;
+  justify-content: space-between;
+}
+.login-footer {
+  box-sizing: border-box;
+  padding: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  border-top: 1px solid var(--border-color);
+  background-color: var(--hover-color);
+  border-radius: 5px;
+}
+.login-footer a {
+  text-decoration: none;
+  color: var(--icon-color);
+}
+.login-footer a:hover {
+  text-decoration: underline;
+}
+.new-user-btn {
+  width: 100% !important;
+  text-transform: initial !important;
+  padding: 3px 25px !important;
+  border-radius: 25px !important;
+  background-color: var(--hover-color) !important;
+  color: var(--icon-color) !important;
+  font-size: 16px !important;
+}
+
+.register-referredby {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--link-color);
+  display: block;
+  letter-spacing: 1px;
+}

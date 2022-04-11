@@ -1,0 +1,54 @@
+.your-activity-sidebar {
+  display: flex;
+  flex-direction: column;
+  margin-right: 20px;
+  flex: 0 0 170px;
+  position: sticky !important;
+  box-sizing: border-box;
+  top: 70px;
+  height: calc(100vh - 70px);
+}
+.activity-sidebar-title {
+  margin-left: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  color: rgb(58, 58, 58) !important;
+}
+
+.your-questions,
+.your-answers {
+  transition: none !important;
+  position: relative !important;
+  width: 100%;
+  text-transform: initial !important;
+  justify-content: flex-start !important;
+  margin: 0 !important;
+  padding: 0px 8px !important;
+  font-size: 14px !important;
+  color: rgb(116, 116, 116) !important;
+  font-weight: 400 !important;
+}
+.your-questions {
+  margin-bottom: 4px !important;
+}
+.activity-sidebar-divider {
+  margin: 10px 0px 5px 0px;
+  color: var(--hover-color);
+}
+.your-questions-btn {
+  text-decoration: none;
+}
+.your-answers-btn {
+  text-decoration: none;
+}
+
+/* .your-activity-active-btn {
+  color: var(--quora-color) !important;
+  background-color: rgba(185, 43, 39, 0.1) !important;
+} */
+
+.active > .your-questions,
+.active > .your-answers {
+  color: var(--quora-color) !important;
+  background-color: rgba(185, 43, 39, 0.1) !important;
+}

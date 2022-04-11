@@ -1,0 +1,34 @@
+.gossipBox {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border-color);
+  padding: 15px;
+  background-color: #fff;
+  color: var(--icon-color);
+  margin-bottom: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+.gossipBox:hover {
+  border-color: var(--border-hover-color);
+}
+.gossipBox_profile_pic {
+  color: #0053ee !important;
+  margin-right: 5px;
+  transform: scale(0.6) !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+.gossipBox_profile {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 5px;
+}
+.gossipBox_profile_name {
+  line-height: 40px;
+  font-size: 14px;
+  vertical-align: baseline;
+}
+/* .gossipBox_ask_txt {
+  cursor: pointer;
+} */

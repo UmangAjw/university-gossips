@@ -1,0 +1,8 @@
+.feed {
+  /* width: 570px; */
+  flex: 0 0 570px;
+  min-width: auto;
+  /* border: 1px solid black; */
+  /* height: 200vh; */
+  margin-right: 20px;
+}

@@ -1,0 +1,39 @@
+.allproduct_all_items {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  /* width: 800px !important;
+  height: 670px; */
+  grid-gap: 10px;
+}
+
+.allproduct_all_items_link {
+  text-decoration: none;
+  color: inherit;
+}
+/* Add Product modal css */
+
+.react-responsive-modal-closeButton {
+  left: 14px;
+  color: var(--icon-color);
+  width: fit-content;
+}
+.react-responsive-modal-modal {
+  border-radius: 10px;
+  padding: 0 !important;
+  margin: 0;
+}
+.add_product_modal {
+  box-sizing: border-box;
+  width: 660px;
+  height: 540px;
+  border-radius: 15px !important;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 25px;
+  box-sizing: border-box;
+}
+.add_product_modal_fields {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+}

@@ -1,0 +1,57 @@
+.eachuser {
+  display: flex;
+  flex-direction: row;
+}
+.eachuser_left {
+  width: 550px;
+}
+.eachuser_info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border: 1px solid var(--border-color);
+  padding: 15px;
+  margin-bottom: 10px;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+.eachuser_info_splitter {
+  display: flex;
+}
+.eachuser_profile_pic {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+.eachuser_profile_name {
+  font-size: 27px;
+}
+.eachuser_name_and_details {
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+}
+.eachuser_username_txt {
+  text-decoration: underline;
+}
+.eachuser_username {
+  margin-bottom: 2px;
+  color: var(--link-color);
+  cursor: pointer;
+}
+.eachuser_share_pic {
+  color: var(--icon-color);
+  transform: scaleX(-1);
+}
+
+.eachuser_share_btn {
+  display: flex;
+  padding: 3px 3px;
+  background-color: var(--btn-bg-color);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.eachuser_share_btn:hover {
+  background-color: var(--border-color);
+}

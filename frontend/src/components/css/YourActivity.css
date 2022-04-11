@@ -1,0 +1,14 @@
+.your-activity {
+  display: flex;
+  justify-content: center;
+}
+
+.your-activity-empty-div {
+  width: 230px !important;
+}
+.your-activity-empty-div2 {
+  width: 230px !important;
+}
+.activity-posts-wrapper {
+  flex: 0 0 570px;
+}

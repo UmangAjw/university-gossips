@@ -1,0 +1,59 @@
+.gossips-home {
+  display: flex;
+  justify-content: center;
+}
+
+@media only screen and (max-width: 1000px) {
+  .gossips_content {
+    max-width: 100%;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  .feed {
+    flex-shrink: 1;
+  }
+  .sidebar {
+    flex-shrink: 5;
+  }
+  .widget {
+    flex-shrink: 5;
+  }
+  .gNavbar_add_btn {
+    display: none;
+  }
+  .gNavbar_plus_btn {
+    display: none;
+  }
+  .gNavbar_avatar {
+    margin-right: 0;
+    padding: 0;
+  }
+  .following-empty-div {
+    display: none;
+  }
+}
+@media only screen and (max-width: 800px) {
+  .widget {
+    display: none;
+  }
+  .feed {
+    margin-right: 0;
+  }
+}
+@media only screen and (max-width: 525px) {
+  .sidebar {
+    display: none;
+  }
+  .gNavbar_input {
+    order: 1;
+  }
+  .gNavbar_logo {
+    order: 2;
+  }
+  .gNavbar_end_buttons {
+    order: 3;
+  }
+  .gNavbar_icons {
+    order: 4;
+  }
+}

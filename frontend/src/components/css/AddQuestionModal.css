@@ -1,0 +1,195 @@
+.react-responsive-modal-closeButton {
+  left: 14px;
+  color: var(--icon-color);
+  width: fit-content;
+}
+.react-responsive-modal-modal {
+  border-radius: 10px;
+  padding: 0 !important;
+  margin: 0;
+}
+.add_question_modal {
+  box-sizing: border-box;
+  width: 660px;
+  height: 540px;
+  border-radius: 15px !important;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 25px;
+  box-sizing: border-box;
+}
+.modal_title_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal_title {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 10px;
+  width: fit-content;
+}
+.modal_title:hover {
+  background-color: var(--hover-color);
+}
+.modal_title h4 {
+  color: var(--icon-color);
+  font-size: 14px;
+  font-weight: 500 !important;
+}
+.modal_instructions_heading {
+  font-size: 15px;
+  /* font-weight: 600; */
+}
+.modal_title_arrow {
+  color: var(--icon-color);
+}
+.modal_instructions {
+  background-color: #ebf0ff;
+  color: #0053ee;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+.modal_instructions_ul {
+  padding: 0px 20px;
+  font-size: 15px;
+}
+.modal_info {
+  display: flex;
+  align-items: center;
+}
+.modal_info_profile_pic {
+  color: var(--link-color);
+  margin-right: 5px;
+  width: 30px !important;
+  height: 30px !important;
+}
+.modal_info_profile_name {
+  font-size: 14px;
+  line-height: 24px;
+  margin-right: 10px;
+  color: var(--icon-color);
+}
+.modal_info_wrapper {
+  display: flex;
+  margin-bottom: 10px;
+  align-items: center;
+}
+.modal_scope {
+  cursor: pointer;
+  display: flex;
+  border: 1px solid var(--border-color);
+  background-color: var(--hover-color);
+  border-radius: 15px;
+  padding: 2px;
+}
+.modal_scope_people_icon {
+  transform: scale(0.8);
+}
+.modal_scope_people_text {
+  font-size: 14px;
+  line-height: 24px;
+}
+.modal_question_input {
+  outline: none;
+  font-size: 16px;
+  padding: 8px 0px;
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid var(--border-color);
+}
+.modal_question_input:focus {
+  border-bottom: 1px solid var(--link-color);
+}
+.modal_footer_buttons {
+  position: absolute;
+  bottom: 10px;
+}
+.modal_footer_buttons {
+  padding-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+  border: none;
+  box-sizing: border-box;
+  border-top: 1px solid var(--border-color);
+  width: 92%;
+}
+.modal_footer_add_q {
+  text-transform: initial !important;
+  height: 30px !important;
+  border-radius: 15px !important;
+  background-color: var(--link-color) !important;
+  color: white !important;
+  font-size: 13px !important;
+}
+.modal_footer_cancel {
+  text-transform: initial !important;
+  height: 30px !important;
+  border-radius: 15px !important;
+  background-color: var(--hover-color) !important;
+  color: var(--icon-color) !important;
+  font-size: 13px !important;
+  margin-right: 10px !important;
+}
+.modal_question_av {
+  margin-top: 10px;
+  display: none;
+}
+.modal_question_av_tick {
+  transform: scale(0.85);
+  vertical-align: center;
+  color: var(--link-color);
+}
+.modal_question_av_txt {
+  display: inline;
+  vertical-align: top;
+  color: var(--icon-color);
+}
+.modal_question_existing_box {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  padding: 10px 20px;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+}
+.modal_question_existing_wrapper {
+  display: flex;
+  flex-direction: column;
+}
+.modal_question_existing_q {
+  font-size: 15px;
+  font-weight: 600;
+}
+.modal_question_existing_q:hover {
+  text-decoration: underline;
+}
+.modal_question_existing_count {
+  font-size: 13px;
+  color: var(--icon-color);
+}
+.modal_question_existing_view {
+  display: flex;
+  align-items: center;
+  padding: 0px 5px 0px 10px;
+  font-size: 14px;
+  color: var(--icon-color);
+}
+.modal_question_existing_view:hover {
+  background-color: var(--hover-color);
+  border-radius: 35px;
+  cursor: pointer;
+}
+.modal_question_existing_pic {
+  transform: rotate(270deg) scale(0.85);
+  color: var(--icon-color);
+}
+.modal_question_existing_link {
+  text-decoration: none;
+  color: inherit;
+}

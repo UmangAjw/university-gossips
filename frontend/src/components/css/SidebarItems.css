@@ -1,0 +1,19 @@
+.sidebarItem {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  padding: 8px;
+  font-size: 14px;
+  box-sizing: border-box;
+  width: 170px;
+  cursor: pointer;
+  color: rgb(116, 116, 116);
+}
+.sidebaritem_img {
+  height: 20px;
+  margin-right: 5px;
+  border-radius: 3px;
+}
+.sidebarItem:hover {
+  background-color: rgb(216, 216, 216);
+}

@@ -1,0 +1,46 @@
+{
+  "0": {
+    "sideBarImg": "/img/sidebaritems/education-sidebaritem.jpeg",
+    "sideBarTxt": "Education"
+  },
+  "1": {
+    "sideBarImg": "/img/sidebaritems/book-sidebaritem.jpeg",
+    "sideBarTxt": "Books"
+  },
+  "2": {
+    "sideBarImg": "/img/sidebaritems/music-sidebaritem.jpeg",
+    "sideBarTxt": "Music"
+  },
+  "3": {
+    "sideBarImg": "/img/sidebaritems/food-sidebaritem.jpeg",
+    "sideBarTxt": "Food"
+  },
+  "4": {
+    "sideBarImg": "/img/sidebaritems/health-sidebaritem.jpeg",
+    "sideBarTxt": "Health & Fitness"
+  },
+  "5": {
+    "sideBarImg": "/img/sidebaritems/business-sidebaritem.jpeg",
+    "sideBarTxt": "Business"
+  },
+  "6": {
+    "sideBarImg": "/img/sidebaritems/travel-sidebaritem.jpeg",
+    "sideBarTxt": "Travel & Vacations"
+  },
+  "7": {
+    "sideBarImg": "/img/sidebaritems/movie-sidebaritem.jpeg",
+    "sideBarTxt": "Movies"
+  },
+  "8": {
+    "sideBarImg": "/img/sidebaritems/science-sidebaritem.jpeg",
+    "sideBarTxt": "Science"
+  },
+  "9": {
+    "sideBarImg": "/img/sidebaritems/technology-sidebaritem.jpeg",
+    "sideBarTxt": "Technology"
+  },
+  "10": {
+    "sideBarImg": "/img/sidebaritems/bollywood-sidebaritem.jpeg",
+    "sideBarTxt": "Bollywood Talk"
+  }
+}

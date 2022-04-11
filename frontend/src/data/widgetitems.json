@@ -1,0 +1,72 @@
+{
+  "0": {
+    "widgetSpaceImg": "/img/widgetitems/computerscience-widgetitem.jpeg",
+    "widgetSpaceHeading": "Computer Science",
+    "widgetSpaceSubheading": "A space for those who love Computer Science"
+  },
+  "1": {
+    "widgetSpaceImg": "/img/widgetitems/canadaprupdates-widgetitem.jpeg",
+    "widgetSpaceHeading": "Canada PR Updates",
+    "widgetSpaceSubheading": "Never miss any update regarding Canadian PR"
+  },
+  "2": {
+    "widgetSpaceImg": "/img/widgetitems/datastructures-widgetitem.jpeg",
+    "widgetSpaceHeading": "Data Structures",
+    "widgetSpaceSubheading": "Group for Data Structures & Alogrithm concepts"
+  },
+  "3": {
+    "widgetSpaceImg": "/img/widgetitems/interviewpreparation-widgetitem.jpeg",
+    "widgetSpaceHeading": "Interview preparation",
+    "widgetSpaceSubheading": "Guidance on interview preparation and job search"
+  },
+  "4": {
+    "widgetSpaceImg": "/img/widgetitems/itcareers-widgetitem.jpeg",
+    "widgetSpaceHeading": "IT jobs & careers",
+    "widgetSpaceSubheading": "All about IT jobs & careers for freshers and experienced"
+  },
+  "5": {
+    "widgetSpaceImg": "/img/widgetitems/itcompanies-widgetitem.jpeg",
+    "widgetSpaceHeading": "IT companies",
+    "widgetSpaceSubheading": "Know IT world"
+  },
+  "6": {
+    "widgetSpaceImg": "/img/widgetitems/mastersincanada-widgetitem.jpeg",
+    "widgetSpaceHeading": "Masters in Canada",
+    "widgetSpaceSubheading": "University shorlist, guidance and much more"
+  },
+  "7": {
+    "widgetSpaceImg": "/img/widgetitems/mathsandphysics-widgetitem.jpeg",
+    "widgetSpaceHeading": "Maths & Physics",
+    "widgetSpaceSubheading": "This space is about the beauty of physics and maths"
+  },
+  "8": {
+    "widgetSpaceImg": "/img/widgetitems/pythoncoding-widgetitem.jpeg",
+    "widgetSpaceHeading": "Python Coding",
+    "widgetSpaceSubheading": "Learn Python tips and tricks"
+  },
+  "9": {
+    "widgetSpaceImg": "/img/widgetitems/brain-widgetitem.jpeg",
+    "widgetSpaceHeading": "Brain tricks",
+    "widgetSpaceSubheading": "Useful tips and tricks to enhance your remembering power"
+  },
+  "10": {
+    "widgetSpaceImg": "/img/widgetitems/jobhunt-widgetitem.jpeg",
+    "widgetSpaceHeading": "Job hunt",
+    "widgetSpaceSubheading": "Latest news and updates about off-campus hiring"
+  },
+  "11": {
+    "widgetSpaceImg": "/img/widgetitems/psychology-widgetitem.jpeg",
+    "widgetSpaceHeading": "Psychology",
+    "widgetSpaceSubheading": "Tips & tricks for self-improvement and understanding people "
+  },
+  "12": {
+    "widgetSpaceImg": "/img/widgetitems/tourist-widgetitem.jpeg",
+    "widgetSpaceHeading": "Tourist destinations",
+    "widgetSpaceSubheading": "Places of tourism, tourists and travel"
+  },
+  "13": {
+    "widgetSpaceImg": "/img/widgetitems/vlsi-widgetitem.jpeg",
+    "widgetSpaceHeading": "VLSI beginners",
+    "widgetSpaceSubheading": "Discuss and share ideas for VLSI"
+  }
+}

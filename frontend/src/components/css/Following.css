@@ -1,0 +1,15 @@
+.FollowingPage {
+  display: flex;
+  justify-content: center;
+}
+.following-feed {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin-right: 20px;
+  width: 570px;
+}
+
+.following-empty-div {
+  width: 210px;
+}

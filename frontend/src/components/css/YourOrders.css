@@ -1,0 +1,9 @@
+.your_orders {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  height: fit-content;
+}
+.your_orders_container {
+  height: fit-content;
+}

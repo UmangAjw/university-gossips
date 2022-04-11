@@ -1,0 +1,28 @@
+.widget {
+  /* width: 210px; */
+  /* flex: 0.175 1; */
+
+  box-sizing: border-box;
+  border: 1px solid var(--border-color);
+  border-bottom: none;
+  background-color: rgb(255, 255, 255);
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+}
+.widget_header {
+  padding: 10px 15px;
+  border-bottom: 1px solid var(--border-color);
+}
+.widget_header_txt {
+  font-weight: 600;
+}
+.widget_content {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+.widget-navlink {
+  text-decoration: none;
+  color: inherit;
+}

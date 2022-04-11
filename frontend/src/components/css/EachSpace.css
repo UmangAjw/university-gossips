@@ -1,0 +1,162 @@
+.eachspace {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+.eachspace-header-parent {
+  padding: 15px;
+}
+.eachspace-header {
+  height: 200px;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.eachspace-header-child {
+  padding: 20px;
+}
+.eachspace-header-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+.eachspace-wrapper-widget {
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+}
+.eachspace-wrapper {
+  display: flex;
+  /* justify-content: center; */
+  flex-direction: column;
+  box-sizing: border-box;
+}
+.space-questions {
+  display: flex;
+  flex-direction: column;
+  width: 570px;
+  box-sizing: border-box;
+  margin-right: 15px;
+}
+.eachspace-widget {
+  width: 210px;
+}
+.eachspace-pic {
+  width: 80px;
+  height: 80px;
+  border-radius: 30%;
+  box-shadow: 0px 0px 5px white;
+}
+.eachspace-spacename {
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
+}
+.eachspace-spacedesc {
+  font-size: 14px;
+  color: white;
+}
+.eachspace-banner-wrapper {
+  box-sizing: border-box;
+  width: 795px;
+  height: 200px;
+  /* border: 1px solid black; */
+  /* overflow: hidden;
+  position: absolute;
+  background-position: center center;
+  background-repeat: no-repeat;
+  overflow: hidden; */
+}
+.eachspace-banner {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  object-fit: cover;
+  z-index: -1;
+}
+.eachspace-add-q-btn {
+  text-transform: initial !important;
+  height: 30px !important;
+  border-radius: 15px !important;
+  background-color: white !important;
+  color: var(--link-color) !important;
+  font-size: 13px !important;
+  margin-right: 10px !important;
+}
+.eachspace-follow-btn {
+  text-transform: initial !important;
+  height: 30px !important;
+  border-radius: 15px !important;
+  background-color: white !important;
+  color: var(--link-color) !important;
+  font-size: 13px !important;
+}
+.eachspace-unfollow-btn {
+  text-transform: initial !important;
+  height: 30px !important;
+  border-radius: 15px !important;
+  background-color: var(--link-color) !important;
+  color: white !important;
+  font-size: 13px !important;
+}
+
+/* Moderator Modal CSS */
+
+.moderator_modal {
+  box-sizing: border-box;
+  width: 660px;
+  height: 540px;
+  border-radius: 15px !important;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 25px;
+  box-sizing: border-box;
+}
+.moderator_modal_title {
+  margin-top: 45px;
+  margin-bottom: 20px;
+}
+.moderator_modal_input_label {
+  font-weight: 500;
+  display: block;
+  margin-bottom: 5px;
+}
+#moderator_modal_input {
+  box-sizing: border-box;
+  min-height: 40px;
+  width: 100%;
+  outline: none;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 15px;
+}
+#moderator_modal_input:focus {
+  border-color: var(--link-color);
+}
+
+.moderator_modal_footer {
+  position: absolute;
+  bottom: 10px;
+  width: 92%;
+}
+.moderator_modal_footer_divider {
+  margin-bottom: 10px;
+  border-top: 1px solid var(--border-color);
+}
+.moderator_modal_footer_btns {
+  display: flex;
+  justify-content: flex-end;
+}
+.moderator_modal_btn {
+  text-transform: initial !important;
+  height: 30px !important;
+  border-radius: 15px !important;
+  background-color: var(--link-color) !important;
+  color: white !important;
+  font-size: 13px !important;
+  padding: 10px 25px !important;
+}

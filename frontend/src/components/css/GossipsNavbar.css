@@ -1,0 +1,199 @@
+@import url("https://fonts.googleapis.com/css2?family=Merriweather:wght@900&display=swap");
+
+:root {
+  --icon-margin-right: 20px;
+  --icon-padding: 0px 10px;
+  --icon-size: 1.2;
+  --icon-less-margin-right: 5px;
+  --icon-less-padding: 6px 10px;
+  --hover-color: #f3f3fa;
+  --quora-color: #b92b27;
+  /* --quora-color: #2729b9; */
+  --icon-color: #636466;
+}
+.gNavbar {
+  position: fixed;
+  overflow: hidden;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background-color: #fff !important;
+  line-height: 0;
+  box-shadow: 0px 0px 3px grey;
+  z-index: 10;
+}
+.gNavbar_logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 0;
+  margin-right: var(--icon-margin-right);
+  cursor: pointer;
+}
+.text-logo {
+  font-family: "Merriweather", serif;
+  color: var(--quora-color);
+  opacity: 1;
+  user-select: none;
+  pointer-events: none;
+  padding: var(--icon-padding);
+}
+.gNavbar_logo:hover .text-logo {
+  opacity: 0.7;
+}
+.gNavbar-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: stretch;
+  flex-wrap: wrap;
+  position: relative;
+}
+.gNavbar_icons {
+  top: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 0;
+}
+.gNavbar_icon {
+  display: flex;
+  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
+  height: 44px;
+  cursor: pointer;
+  padding: var(--icon-padding);
+}
+.navbar_selected {
+  text-decoration: none;
+  margin-right: calc(1 * var(--icon-margin-right));
+}
+.gNavbar_icon:hover {
+  background-color: var(--hover-color);
+  /* border-bottom: 2px solid var(--quora-color); */
+}
+.gNavbar_svg {
+  transform: scale(var(--icon-size));
+  color: var(--icon-color);
+}
+.gNavbar_avatar {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  margin: 0;
+}
+.gNavbar_svg.user_img {
+  transform: scale(0.8) !important;
+}
+
+.navbar_selected.active > .primary_icon {
+  border-bottom: 3px solid var(--quora-color);
+}
+.navbar_selected.active > * > .secondary_svg {
+  display: none;
+}
+.navbar_selected.active .primary_svg {
+  display: block;
+  color: var(--quora-color) !important;
+}
+.navbar_selected .secondary_svg {
+  display: block;
+}
+.navbar_selected .primary_svg {
+  display: none;
+}
+/* .gNavbar_icon:hover .gNavbar_svg {
+  color: var(--quora-color);
+} */
+
+.gNavbar_avatar {
+  cursor: pointer;
+  margin-right: var(--icon-less-margin-right);
+  padding: var(--icon-less-padding);
+}
+.gNavbar_plus_btn,
+.gNavbar_add_btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* margin-right: var(--icon-less-margin-right); */
+  /* padding: var(--icon-padding); */
+  min-width: fit-content;
+  line-height: 0;
+  /* width: 100%; */
+}
+.gNavbar_plus_btn .MuiButton-root {
+  text-transform: initial !important;
+  height: 25px !important;
+  border-radius: 15px !important;
+  background-color: #efeff1 !important;
+  color: rgb(77, 77, 77) !important;
+  border: 1px solid #e6e6e7;
+  font-size: 13px !important;
+}
+.gNavbar_plus_btn {
+  margin-right: var(--icon-less-margin-right) !important;
+}
+.gNavbar_add_btn .MuiButton-root {
+  text-transform: initial !important;
+  height: 25px !important;
+  border-radius: 15px !important;
+  background-color: var(--quora-color) !important;
+  color: white !important;
+  font-size: 13px !important;
+}
+.gNavbar_svg_search {
+  transform: scale(0.7) !important;
+  position: absolute;
+  color: var(--icon-color);
+  left: 12px;
+}
+.gNavbar_input {
+  margin-right: var(--icon-less-margin-right);
+  padding: var(--icon-less-padding);
+  line-height: 0;
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  /* width: max-content; */
+  max-width: 220px;
+  flex: 1;
+}
+.gNavbar_input_field {
+  height: 30px !important;
+  width: 100%;
+  max-width: 220px;
+  padding: 0px 23px;
+  border: 1px solid rgb(199, 196, 196);
+  border-radius: 3px;
+}
+.gNavbar_input_field:hover {
+  border: 1px solid #0053ee;
+}
+.gNavbar_input_field:focus {
+  outline: none !important;
+  border: 1px solid #0053ee;
+  box-shadow: 0px 0px 2px grey;
+}
+
+.gNavbar_avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.gNavbar_overlay {
+  position: fixed;
+  z-index: 1;
+  display: none;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(36, 36, 36, 0.9);
+}
+.gNavbar_end_buttons {
+  display: flex;
+}

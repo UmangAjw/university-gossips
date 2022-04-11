@@ -1,0 +1,24 @@
+.widgetItem {
+  display: flex;
+  padding: 10px 15px;
+  cursor: pointer;
+  /* height: 100%; */
+  border-bottom: 1px solid var(--border-color);
+}
+.widget_space_img {
+  height: 25px;
+  width: 25px;
+  border-radius: 5px;
+  margin-right: 5px;
+  border: 1px solid var(--border-color);
+}
+.widget_space_heading {
+  font-size: 13px;
+}
+.widget_space_subheading {
+  font-size: 12px;
+  color: grey;
+}
+.widgetItem:hover {
+  background-color: var(--hover-color);
+}

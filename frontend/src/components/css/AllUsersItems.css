@@ -1,0 +1,19 @@
+.all_users_items {
+  display: flex;
+  align-items: center;
+  /* background-color: var(--btn-bg-color); */
+  border-bottom: 1px solid var(--border-color);
+  padding: 16px 24px;
+}
+.all_users_index {
+  width: var(--userrank-col1);
+}
+.all_users_name {
+  display: flex;
+  width: var(--userrank-col2);
+
+  align-items: center;
+}
+.all_users_delete {
+  width: var(--userrank-col3);
+}
