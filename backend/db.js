@@ -7,6 +7,7 @@ module.exports.connect = () => {
     .connect(url, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      poolSize: 100,
     })
     .then(() => {
       console.log("Mongo DB connected");
