@@ -6,6 +6,48 @@
   grid-gap: 10px;
 }
 
+.allproducts_header_top_card {
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  /* width: 1000px; */
+  flex-direction: column;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid var(--border-color);
+  margin-bottom: 10px;
+}
+.allproducts_header_top_card_bg {
+  position: absolute;
+  overflow: hidden;
+  /* width: 19vw; */
+  bottom: 0;
+  right: 0;
+  width: 45%;
+}
+.allproducts_header_top_card_btn_wrapper {
+  margin-top: 25px;
+  color: var(--link-color);
+  display: flex;
+}
+.allproducts_header_top_card_create_btn {
+  margin-right: 10px;
+  cursor: pointer;
+}
+.allproducts_header_top_card_create_btn,
+.allproducts_header_top_card_discover_btn {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--link-color);
+  border-radius: 20px;
+  padding: 3px 10px;
+}
+.allproducts_header_top_card_create_svg,
+.allproducts_header_top_card_discover_svg {
+  height: 20px;
+  margin-right: 2px;
+}
+
 .allproduct_all_items_link {
   text-decoration: none;
   color: inherit;
@@ -25,15 +67,75 @@
 .add_product_modal {
   box-sizing: border-box;
   width: 660px;
-  height: 540px;
+  height: fit-content;
   border-radius: 15px !important;
   display: flex;
   flex-direction: column;
   padding: 10px 25px;
-  box-sizing: border-box;
 }
 .add_product_modal_fields {
-  margin-top: 50px;
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
+}
+
+#add_product_product_name,
+#add_product_product_price,
+#add_product_product_desc,
+#add_product_product_stock {
+  box-sizing: border-box;
+  min-height: 40px;
+  width: 100%;
+  outline: none;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+#add_product_product_image {
+  height: 20px;
+}
+
+#add_product_product_name:hover,
+#add_product_product_price:hover,
+#add_product_product_desc:hover,
+#add_product_product_stock:hover {
+  border-color: var(--link-color);
+}
+
+#add_product_product_name:focus,
+#add_product_product_price:focus,
+#add_product_product_desc:focus,
+#add_product_product_stock:focus {
+  border-color: var(--link-color);
+}
+
+.add_product_header {
+  margin-top: 45px;
+}
+.add_product_header p {
+  color: var(--icon-color);
+  font-size: 15px;
+}
+.add_product_product_price_and_stock {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.add_product_price_wrapper,
+.add_product_stock_wrapper {
+  width: 49%;
+}
+.add_product_modal_btn {
+  width: fit-content !important;
+}
+
+.add_product_footer_buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+.add_product_footer {
+  margin-top: 60px;
 }

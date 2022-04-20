@@ -25,93 +25,8 @@ import axios from "axios";
 import { NavLink } from "react-router-dom";
 import { selectUser } from "../features/userSlice";
 import { useSelector } from "react-redux";
-
-// function Post(props) {
-//   const [isModalOpen, setisModalOpen] = useState(false);
-//   const close = <CloseIcon />;
-//   return (
-//     <div className="post">
-//       <div className="post_profile">
-//         <AccountCircleIcon className="post_profile_pic" />
-//         <div className="post_profile_double_line">
-//           <div className="post_profile_row1">
-//             <h5 className="post_profile_name">{props.postProfileName}</h5>
-//           </div>
-//           <div className="post_profile_row2">
-//             <h5 className="post_profile_bio">{props.postProfileBio}</h5>
-//             <h5>&nbsp;- </h5>
-//             <h5 className="post_timestamp">&nbsp;{props.postTimestamp}</h5>
-//           </div>
-//         </div>
-//       </div>
-//       <div className="post_question">
-//         <h4 className="post_question_txt">{props.postQuestion.join(" ")}</h4>
-//         <Button
-//           onClick={() => {
-//             setisModalOpen(true);
-//           }}
-//           className="post_answer_btn"
-//         >
-//           Answer
-//         </Button>
-//       </div>
-//       <div className="post_answer_count">1 answers</div>
-//       <div className="post_answer_wrapper">
-//         <hr className="post_answer_divider" />
-//         <div className="post_answers">
-//           <div className="post_answer_container">
-//             <div className="post_info">
-//               <AccountCircleIcon className="post_answer_pic" />
-//               <div className="post_answer_username_wrapper">
-//                 <h5 className="post_answer_profile_name">Username</h5>
-//                 <h5 className="post_answer_timestamp">20 mins ago</h5>
-//               </div>
-//             </div>
-//             <div className="post_answer">
-//               <p className="post_answer_txt">{props.postAnswer.join(" ")}</p>
-//             </div>
-//             <div className="post_buttons">
-//               <div className="post_buttons_group_one">
-//                 <div className="post_vote">
-//                   <div className="post_vote_up_btn">
-//                     <ForwardOutlinedIcon className="post_vote_up" />
-//                     <p className="post_vote_up_txt">20</p>
-//                   </div>
-//                   <div className="post_vote_down_btn">
-//                     <ForwardOutlinedIcon className="post_vote_down" />
-//                     <p className="post_vote_down_txt"></p>
-//                   </div>
-//                 </div>
-//                 <div className="post_share_btn">
-//                   <CachedIcon className="post_share_pic" />
-//                 </div>
-//                 <div className="post_comment_btn">
-//                   <QuestionAnswerOutlinedIcon className="post_comment_pic" />
-//                 </div>
-//               </div>
-//               <div className="post_buttons_group_two">
-//                 <div className="post_share_all_btn">
-//                   <ShareOutlinedIcon className="post_share_all_pic" />
-//                 </div>
-//                 <div className="post_more_btn">
-//                   <MoreHorizOutlinedIcon className="post_more_pic" />
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//       <Modal
-//         open={isModalOpen}
-//         onClose={() => setisModalOpen(false)}
-//         closeIcon={close}
-//         center
-//       >
-//         <AddAnswerModal />
-//       </Modal>
-//     </div>
-//   );
-// }
+import { ADMIN_USER_UID } from "./auth/Constants";
+import slugify from "react-slugify";
 
 function Post(props) {
   const [isModalOpen, setisModalOpen] = useState(false);
@@ -126,6 +41,10 @@ function Post(props) {
         <ReactTimeAgo date={date} locale="en-US" timeStyle="round" />
       </div>
     );
+  };
+
+  const blockAnonymousNavLink = (e) => {
+    e.preventDefault();
   };
 
   const handleClose = () => {
@@ -173,11 +92,13 @@ function Post(props) {
         <div className="post_profile_child">
           <Avatar
             src={
-              props.postUserCompleteDetails &&
-              props.postUserCompleteDetails.profilePic
-                ? "/img/userprofilepics/" +
+              props.postQuestionType
+                ? props.postUserCompleteDetails &&
                   props.postUserCompleteDetails.profilePic
-                : "/"
+                  ? "/img/userprofilepics/" +
+                    props.postUserCompleteDetails.profilePic
+                  : "/"
+                : "/img/incognito.png"
             }
             className="post_profile_pic"
           />
@@ -187,107 +108,49 @@ function Post(props) {
                 className={"post_profile_name_link"}
                 target={"_top"}
                 to={
+                  props.postQuestionType &&
                   props.postUserCompleteDetails &&
                   props.postUserCompleteDetails.username
                     ? "/user/" + props.postUserCompleteDetails.username
                     : "/"
                 }
+                onClick={(e) => {
+                  if (!props.postQuestionType) e.preventDefault();
+                }}
               >
                 <h5 className="post_profile_name">
-                  {props.postUserCompleteDetails &&
-                  props.postUserCompleteDetails.name
-                    ? props.postUserCompleteDetails.name
-                    : "Temp Name"}
+                  {props.postQuestionType
+                    ? props.postUserCompleteDetails &&
+                      props.postUserCompleteDetails.name
+                      ? props.postUserCompleteDetails.name
+                      : "Temp Name"
+                    : "Anonymous"}
                 </h5>
               </NavLink>
             </div>
             <div className="post_profile_row2">
               <h5 className="post_profile_bio">
-                {props.postUserCompleteDetails &&
-                props.postUserCompleteDetails.userBio
-                  ? props.postUserCompleteDetails.userBio
-                  : "temp user bio"}
+                {props.postQuestionType
+                  ? props.postUserCompleteDetails &&
+                    props.postUserCompleteDetails.userBio
+                    ? props.postUserCompleteDetails.userBio
+                    : "temp user bio"
+                  : ""}
               </h5>
-              <h5>&nbsp;- </h5>
+              {props.postQuestionType ? <h5>&nbsp;-&nbsp;</h5> : ""}
               <h5 className="post_timestamp">
-                &nbsp;
                 {/* <LastSeen date={new Date(props.postTimestamp)} /> */}
                 {moment(props.postTimestamp * 1000).fromNow()}
               </h5>
             </div>
-            {/* <div className="post_profile_row3">
-            {user && user.uid === props.postUser.uid ? (
-              <button
-              onClick={async () => {
-                if (
-                  window.confirm(
-                    "Are you sure you want to delete this question?"
-                  )
-                ) {
-                  await axios
-                    .delete("/api/questions/deletebyid/" + props.postId)
-                    .then((res) => {
-                      console.log(res.msg);
-                      // window.location.href = "/";
-                    })
-                    .catch((e) => {
-                      console.log(e);
-                    });
-                  await axios
-                    .delete("/api/questions/deleteallbyid/" + props.postId)
-                    .then((res) => {
-                      console.log(res.msg);
-                      window.location.href = "/";
-                    })
-                    .catch((e) => {
-                      console.log(e);
-                    });
-                }
-              }}
-                className="post_delete"
-              >
-                Delete
-              </button>
-            ) : (
-              ""
-            )}
-          </div> */}
           </div>
         </div>
-        {/* {user && user.uid === props.postUser.uid ? (
-          <div
-            onClick={async () => {
-              if (
-                window.confirm("Are you sure you want to delete this question?")
-              ) {
-                await axios
-                  .delete("/api/questions/deletebyid/" + props.postId)
-                  .then((res) => {
-                    console.log(res.msg);
-                    // window.location.href = "/";
-                  })
-                  .catch((e) => {
-                    console.log(e);
-                  });
-                await axios
-                  .delete("/api/questions/deleteallbyid/" + props.postId)
-                  .then((res) => {
-                    console.log(res.msg);
-                    window.location.href = "/";
-                  })
-                  .catch((e) => {
-                    console.log(e);
-                  });
-              }
-            }}
-            className="delete_post_by_user_btn"
-          >
-            <DeleteForeverIcon className="delete_post_by_user_pic" />
-          </div>
-        ) : (
-          ""
-        )} */}
-        {(user && props.spaceModerators && props.spaceOwner
+
+        {(props.from &&
+          props.from === "ManageFeed" &&
+          user &&
+          user.uid === ADMIN_USER_UID) ||
+        (user && props.spaceModerators && props.spaceOwner
           ? user.uid === props.spaceOwner ||
             props.spaceModerators.includes(user.uid)
           : false) ||
@@ -308,7 +171,8 @@ function Post(props) {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              {user && user.uid === props.postUser.uid ? (
+              {(user && user.uid === ADMIN_USER_UID) ||
+              (user && user.uid === props.postUser.uid) ? (
                 <MenuItem
                   className="post_menu"
                   onClick={async () => {
@@ -345,57 +209,66 @@ function Post(props) {
               ) : (
                 ""
               )}
-              <MenuItem
-                onClick={async () => {
-                  setAnchorEl(null);
+              {(props.postSpaceName || props.spaceName) &&
+              user &&
+              user.uid &&
+              (user.uid === props.spaceOwner ||
+                (props.spaceModerators &&
+                  props.spaceModerators.includes(user.uid))) ? (
+                <MenuItem
+                  onClick={async () => {
+                    setAnchorEl(null);
 
-                  if (
-                    window.confirm(
-                      "Are you sure you want to remove this question from space?"
-                    )
-                  ) {
-                    // let questionToBeUpdated = await axios
-                    //   .get("/api/questions/find/" + props.postId)
-                    //   .then((res) => {
-                    //     console.log(res.data.data[0][0]);
-                    //     return res.data.data[0][0];
-                    //     // window.location.href = "/";
-                    //   })
-                    //   .catch((e) => {
-                    //     console.log(e);
-                    //   });
-
-                    // if (questionToBeUpdated) {
-                    let tempSpaceName = "";
-                    let body = {
-                      spaceName: tempSpaceName,
-                    };
-                    const config = {
-                      headers: {
-                        "Content-Type": "application/json",
-                      },
-                    };
-                    await axios
-                      .put(
-                        "/api/questions/updateQuestion/" + props.postId,
-                        body,
-                        config
+                    if (
+                      window.confirm(
+                        "Are you sure you want to remove this question from space?"
                       )
-                      .then((res) => {
-                        console.log(res.msg);
-                        window.location.href = "/space/" + props.spaceSlug;
-                      })
-                      .catch((e) => {
-                        console.log(e);
-                      });
-                    // }
-                  }
-                }}
-              >
-                <span className="post_menu_text_d_s">
-                  Delete Question from Space
-                </span>
-              </MenuItem>
+                    ) {
+                      // let questionToBeUpdated = await axios
+                      //   .get("/api/questions/find/" + props.postId)
+                      //   .then((res) => {
+                      //     console.log(res.data.data[0][0]);
+                      //     return res.data.data[0][0];
+                      //     // window.location.href = "/";
+                      //   })
+                      //   .catch((e) => {
+                      //     console.log(e);
+                      //   });
+
+                      // if (questionToBeUpdated) {
+                      let tempSpaceName = "";
+                      let body = {
+                        spaceName: tempSpaceName,
+                      };
+                      const config = {
+                        headers: {
+                          "Content-Type": "application/json",
+                        },
+                      };
+                      await axios
+                        .put(
+                          "/api/questions/updateQuestion/" + props.postId,
+                          body,
+                          config
+                        )
+                        .then((res) => {
+                          console.log(res.msg);
+                          window.location.href = "/space/" + props.spaceSlug;
+                        })
+                        .catch((e) => {
+                          console.log(e);
+                        });
+                      // }
+                    }
+                  }}
+                >
+                  <span className="post_menu_text_d_s">
+                    Delete Question from Space
+                  </span>
+                </MenuItem>
+              ) : (
+                ""
+              )}
             </Menu>
           </div>
         ) : (
@@ -829,18 +702,22 @@ function Post(props) {
                       <p className="post_vote_down_txt"></p>
                     </div>
                   </div>
-                  <div className="post_share_btn">
+                  {/* <div className="post_share_btn">
                     <CachedIcon className="post_share_pic" />
                   </div>
                   <div className="post_comment_btn">
                     <QuestionAnswerOutlinedIcon className="post_comment_pic" />
-                  </div>
+                  </div> */}
                 </div>
                 <div className="post_buttons_group_two">
                   <div className="post_share_all_btn">
                     <ShareOutlinedIcon className="post_share_all_pic" />
                   </div>
-                  {user && user.uid === eachAnswer.user.uid ? (
+                  {(props.from &&
+                    props.from === "ManageFeed" &&
+                    user &&
+                    user.uid === ADMIN_USER_UID) ||
+                  (user && user.uid === eachAnswer.user.uid) ? (
                     <div className="post_three_dot_menu">
                       <Button
                         aria-controls="simple-menu"
@@ -902,11 +779,17 @@ function Post(props) {
         center
       >
         <AddAnswerModal
+          isModalOpen={isModalOpen}
+          setisModalOpen={setisModalOpen}
           postQuestionName={
-            props.postUserCompleteDetails && props.postUserCompleteDetails.name
-              ? props.postUserCompleteDetails.name
-              : "Temp Name"
+            props.postQuestionType
+              ? props.postUserCompleteDetails &&
+                props.postUserCompleteDetails.name
+                ? props.postUserCompleteDetails.name
+                : "Temp Name"
+              : "Anonymous"
           }
+          postQuestionSpaceName={slugify(props.spaceName)}
           postQuestion={props.postQuestion}
           postAnswer={props.postAnswer}
           postTimestamp={props.postTimestamp}

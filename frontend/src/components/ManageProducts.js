@@ -4,9 +4,15 @@ import AllProducts from "./AllProducts";
 
 function ManageProducts() {
   return (
-    <div style={{ display: "flex", "justify-content": "center" }}>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        marginTop: "70px",
+      }}
+    >
       <AdminSidebar />
-      <AllProducts />
+      <AllProducts from="ManageProducts" />
     </div>
   );
 }

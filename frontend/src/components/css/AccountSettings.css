@@ -1,0 +1,88 @@
+.account_settings {
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  margin-top: 70px;
+  flex-direction: column;
+}
+.account_settings_child_container {
+  width: fit-content;
+}
+.account_settings_header {
+  width: 600px;
+}
+.account_settings_divider {
+  margin: 10px 0px;
+  border: 1px solid var(--border-color);
+}
+.account_settings_header_title {
+  display: flex;
+}
+.account_settings_header_title h3 {
+  font-weight: 500;
+}
+.account_settings_content_row1,
+.account_settings_content_row2,
+.account_settings_content_row3,
+.account_settings_content_row4,
+.account_settings_content_row5 {
+  display: flex;
+  /* justify-content: space-between; */
+  padding: 10px;
+}
+
+.account_settings_content_email_label,
+.account_settings_content_name_label,
+.account_settings_content_username_label,
+.account_settings_content_userbio_label,
+.account_settings_content_userprofilepic_label {
+  width: 40%;
+}
+.account_settings_content_userprofilepic {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.account_settings_content_email,
+.account_settings_content_name,
+.account_settings_content_username,
+.account_settings_content_userbio,
+.account_settings_content_userprofilepic_wrapper {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+}
+
+.account_settings_content_name_btn,
+.account_settings_content_userbio_btn,
+.account_settings_content_userprofilepic_btn {
+  color: var(--link-color);
+  cursor: pointer;
+  user-select: none;
+}
+.account_settings_content_name_btn:hover,
+.account_settings_content_userbio_btn:hover,
+.account_settings_content_userprofilepic_btn:hover {
+  text-decoration: underline;
+}
+
+/* .userdetails_display_name,
+.userdetails_bio,
+.userdetails_profile_pic {
+  display: none;
+} */
+
+#ugossips_display_name,
+#ugossips_user_bio,
+.ugossips_profile_pic_box {
+  margin-bottom: 10px;
+}
+
+.account_settings_content_username {
+  color: var(--link-color);
+}
+
+.account_settings_content_username:hover {
+  text-decoration: underline;
+}

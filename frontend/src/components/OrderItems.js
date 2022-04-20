@@ -2,10 +2,77 @@ import { Button } from "@material-ui/core";
 import React from "react";
 import { NavLink } from "react-router-dom";
 import MoreHorizOutlinedIcon from "@material-ui/icons/MoreHorizOutlined";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import CancelIcon from "@material-ui/icons/Cancel";
 
 import "./css/OrderItems.css";
+import axios from "axios";
 
 function OrderItems(props) {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  let body = {
+    orderStatus: "Order Approved by Admin",
+  };
+
+  async function approveOrder() {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    let body = {
+      orderStatus: "Order Approved by Admin!",
+    };
+    if (props.orderId) {
+      axios
+        .put(
+          "/api/orderDetails/updateOrderDetails/" + props.orderId,
+          body,
+          config
+        )
+        .then((res) => {
+          console.log("Order approved successfully!");
+          window.location.href = "/admin/manage-orders";
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+  }
+
+  async function declineOrder() {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    let body = {
+      orderStatus: "Order Declined by Admin!",
+    };
+    if (props.orderId) {
+      axios
+        .put(
+          "/api/orderDetails/updateOrderDetails/" + props.orderId,
+          body,
+          config
+        )
+        .then((res) => {
+          console.log("Order declined by Admin!");
+          window.location.href = "/admin/manage-orders";
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+  }
+
   return (
     <div
       style={{ display: "flex", justifyContent: "space-between" }}
@@ -41,7 +108,6 @@ function OrderItems(props) {
         </div>
         <div className="order_items_right">
           <NavLink
-            end
             className={"allproduct_all_items_link"}
             to={
               "/product/" +
@@ -69,19 +135,56 @@ function OrderItems(props) {
             </p>
           </div>
           <div className="order_items_status">
+            Billing Name: <p>{props.fullName}</p>
+          </div>
+          <div className="order_items_status">
+            Mobile Number: <p>{props.mobileNumber}</p>
+          </div>
+          <div className="order_items_status">
+            Address: <p>{props.addressLine1}, </p>
+            <p>{props.addressLine2}, </p>
+            <p>
+              {props.city}, {props.state}, {props.country}
+            </p>
+          </div>
+          <div className="order_items_status">
             Status: <p>{props.orderStatus}</p>
           </div>
         </div>
       </div>
-      <div>
-        <Button
+      {props.from && props.from === "OrderItems" ? (
+        <div>
+          {/* <Button
           aria-controls="simple-menu"
           aria-haspopup="true"
           className="post_menu_three_dot_btn"
         >
           <MoreHorizOutlinedIcon className="post_menu_three_dot_pic" />
-        </Button>
-      </div>
+        </Button> */}
+          <div onClick={() => approveOrder()}>
+            <CheckCircleIcon
+              style={{
+                color: "green",
+                cursor: "pointer",
+                height: "30px",
+                width: "30px",
+              }}
+            />
+          </div>
+          <div onClick={() => declineOrder()}>
+            <CancelIcon
+              style={{
+                color: "red",
+                cursor: "pointer",
+                height: "30px",
+                width: "30px",
+              }}
+            />
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 }

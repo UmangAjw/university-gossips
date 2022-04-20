@@ -1,0 +1,11 @@
+.each_user_questions {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+.each_user_questions_question {
+  width: 550px;
+  align-self: start;
+}

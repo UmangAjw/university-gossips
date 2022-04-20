@@ -1,0 +1,27 @@
+.ugossips_terms {
+  display: flex;
+  align-items: center;
+  margin-top: 70px;
+  justify-content: center;
+}
+
+.ugossips_terms_child_container {
+  width: 800px;
+}
+
+.ugossips_terms_header {
+  margin-bottom: 20px;
+}
+
+.ugossips_terms_content {
+  text-align: justify;
+}
+.ugossips_terms_content p {
+  margin-bottom: 20px;
+}
+.ugossips_terms_content ul {
+  margin-left: 50px;
+}
+.ugossips_terms_content ul li {
+  margin-bottom: 20px;
+}

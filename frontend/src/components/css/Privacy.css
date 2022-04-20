@@ -1,0 +1,19 @@
+.ugossips_privacy {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 70px;
+}
+
+.ugossips_privacy_child_container {
+  width: 800px;
+  text-align: justify;
+}
+
+hr {
+  margin: 10px 0px;
+}
+
+.ugossips_privacy_content p {
+  margin-bottom: 10px;
+}

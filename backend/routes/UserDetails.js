@@ -4,6 +4,10 @@ const router = express.Router();
 
 const userDetailsDB = require("../models/UserDetails");
 const upload = multer({ dest: "frontend/public/img/userprofilepics" });
+const questionDB = require("../models/Question");
+const answerDB = require("../models/Answer");
+const spaceDB = require("../models/Space");
+const orderDetailsDB = require("../models/OrderDetails");
 
 // const storage = () => {
 //   multer.diskStorage({
@@ -33,6 +37,7 @@ router.post("/", async (req, res) => {
       .create({
         user: req.body.user,
         xp: req.body.xp,
+        xpTransactions: req.body.xpTransactions,
         username: req.body.username,
         name: req.body.name,
         profilePic: req.body.profilePic,
@@ -151,6 +156,238 @@ router.put("/updateUserDetails/:userId", async (req, res) => {
       status: -1,
     });
   }
+});
+
+// router.delete("/deletebyid/:userId", async (req, res) => {
+//   await userDetailsDB
+//     .deleteOne({ "user.uid": req.params.userId }, (err, data) => {
+//       if (err) {
+//         res.json({ data: err, msg: "SMW", status: -1 });
+//       } else {
+//         if (data.deletedCount == 0) {
+//           res.json({
+//             data: req.params,
+//             msg: "Invalid user id!",
+//             status: 200,
+//           });
+//         } else {
+//           res.json({
+//             data: data,
+//             msg: "User Deleted Successfully!",
+//             status: 200,
+//           });
+//         }
+//       }
+//     })
+//     .clone();
+
+//   await questionDB
+//     .deleteMany({ "user.uid": req.params.userId }, (err, data) => {
+//       if (err) {
+//         res.json({ data: err, msg: "SMW", status: -1 });
+//       } else {
+//         if (data.deletedCount == 0) {
+//           res.json({
+//             data: req.params,
+//             msg: "Invalid user id!",
+//             status: 200,
+//           });
+//         } else {
+//           res.json({
+//             data: data,
+//             msg: "Questions of deleted user deleted Successfully!",
+//             status: 200,
+//           });
+//         }
+//       }
+//     })
+//     .clone();
+
+//   await answerDB
+//     .deleteMany({ "user.uid": req.params.userId }, (err, data) => {
+//       if (err) {
+//         res.json({ data: err, msg: "SMW", status: -1 });
+//       } else {
+//         if (data.deletedCount == 0) {
+//           res.json({
+//             data: req.params,
+//             msg: "Invalid question id!",
+//             status: 200,
+//           });
+//         } else {
+//           res.json({
+//             data: data,
+//             msg: "All answers of deleted user deleted Successfully!",
+//             status: 200,
+//           });
+//         }
+//       }
+//     })
+//     .clone();
+
+//   await spaceDB
+//     .deleteMany({ "user.uid": req.params.userId }, (err, data) => {
+//       if (err) {
+//         res.json({ data: err, msg: "SMW", status: -1 });
+//       } else {
+//         if (data.deletedCount == 0) {
+//           res.json({
+//             data: req.params,
+//             msg: "Invalid question id!",
+//             status: 200,
+//           });
+//         } else {
+//           res.json({
+//             data: data,
+//             msg: "All answers deleted Successfully!",
+//             status: 200,
+//           });
+//         }
+//       }
+//     })
+//     .clone();
+
+//   await orderDetailsDB
+//     .deleteMany({ "user.uid": req.params.userId }, (err, data) => {
+//       if (err) {
+//         res.json({ data: err, msg: "SMW", status: -1 });
+//       } else {
+//         if (data.deletedCount == 0) {
+//           res.json({
+//             data: req.params,
+//             msg: "Invalid question id!",
+//             status: 200,
+//           });
+//         } else {
+//           res.json({
+//             data: data,
+//             msg: "All orders deleted Successfully!",
+//             status: 200,
+//           });
+//         }
+//       }
+//     })
+//     .clone();
+// });
+
+router.delete("/deleteuserdetailsbyuserid/:userId", async (req, res) => {
+  await userDetailsDB
+    .deleteOne({ "user.uid": req.params.userId }, (err, data) => {
+      if (err) {
+        res.json({ data: err, msg: "SMW", status: -1 });
+      } else {
+        if (data.deletedCount == 0) {
+          res.json({
+            data: req.params,
+            msg: "Invalid user id!",
+            status: 200,
+          });
+        } else {
+          res.json({
+            data: data,
+            msg: "User Deleted Successfully!",
+            status: 200,
+          });
+        }
+      }
+    })
+    .clone();
+});
+
+router.delete("/deletespacesbyuserid/:userId", async (req, res) => {
+  await spaceDB
+    .deleteMany({ "user.uid": req.params.userId }, (err, data) => {
+      if (err) {
+        res.json({ data: err, msg: "SMW", status: -1 });
+      } else {
+        if (data.deletedCount == 0) {
+          res.json({
+            data: req.params,
+            msg: "Invalid question id!",
+            status: 200,
+          });
+        } else {
+          res.json({
+            data: data,
+            msg: "All answers deleted Successfully!",
+            status: 200,
+          });
+        }
+      }
+    })
+    .clone();
+});
+
+router.delete("/deleteorderdetailsbyuserid/:userId", async (req, res) => {
+  await orderDetailsDB
+    .deleteMany({ "user.uid": req.params.userId }, (err, data) => {
+      if (err) {
+        res.json({ data: err, msg: "SMW", status: -1 });
+      } else {
+        if (data.deletedCount == 0) {
+          res.json({
+            data: req.params,
+            msg: "Invalid question id!",
+            status: 200,
+          });
+        } else {
+          res.json({
+            data: data,
+            msg: "All orders deleted Successfully!",
+            status: 200,
+          });
+        }
+      }
+    })
+    .clone();
+});
+
+router.delete("/deleteanswersbyuserid/:userId", async (req, res) => {
+  await answerDB
+    .deleteMany({ "user.uid": req.params.userId }, (err, data) => {
+      if (err) {
+        res.json({ data: err, msg: "SMW", status: -1 });
+      } else {
+        if (data.deletedCount == 0) {
+          res.json({
+            data: req.params,
+            msg: "Invalid question id!",
+            status: 200,
+          });
+        } else {
+          res.json({
+            data: data,
+            msg: "All answers of deleted user deleted Successfully!",
+            status: 200,
+          });
+        }
+      }
+    })
+    .clone();
+});
+
+router.delete("/deletequestionsbyuserid/:userId", async (req, res) => {
+  await questionDB
+    .deleteMany({ "user.uid": req.params.userId }, (err, data) => {
+      if (err) {
+        res.json({ data: err, msg: "SMW", status: -1 });
+      } else {
+        if (data.deletedCount == 0) {
+          res.json({
+            data: req.params,
+            msg: "Invalid user id!",
+            status: 200,
+          });
+        } else {
+          res.json({
+            data: data,
+            msg: "Questions of deleted user deleted Successfully!",
+            status: 200,
+          });
+        }
+      }
+    })
+    .clone();
 });
 
 module.exports = router;

@@ -1,0 +1,72 @@
+.ugossips_about {
+  display: flex;
+  margin-top: 70px;
+  align-items: center;
+  justify-content: center;
+}
+.ugossips_about_child_container {
+  width: 800px;
+}
+.ugossips_about_section_one {
+  display: flex;
+  flex-direction: column;
+  text-align: justify;
+  margin-bottom: 30px;
+}
+.ugossips_about_section_one_row_one {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+}
+.ugossips_about_img_one {
+  width: 700px;
+  /* height: 250px; */
+}
+
+.ugossips_about_section_two {
+  display: flex;
+  margin-bottom: 30px;
+  /* align-items: center; */
+}
+
+.ugossips_about_img_two {
+  width: 280px;
+}
+.ugossips_about_section_two_left {
+  margin-right: 50px;
+}
+.ugossips_about_section_two_right {
+  text-align: justify;
+}
+
+.ugossips_about_section_three {
+  display: flex;
+  margin-bottom: 30px;
+  /* align-items: center; */
+}
+
+.ugossips_about_img_three {
+  width: 280px;
+}
+.ugossips_about_section_three_left {
+  margin-right: 50px;
+}
+.ugossips_about_section_three_right {
+  text-align: justify;
+}
+
+.ugossips_about_section_four {
+  display: flex;
+  margin-bottom: 30px;
+  /* align-items: center; */
+}
+
+.ugossips_about_img_four {
+  width: 280px;
+}
+.ugossips_about_section_four_left {
+  margin-right: 50px;
+}
+.ugossips_about_section_four_right {
+  text-align: justify;
+}

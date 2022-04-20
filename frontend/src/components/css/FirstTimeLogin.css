@@ -1,9 +1,17 @@
 .firsttimelogin {
   display: flex;
-  width: 650px;
+  /* width: fit-content; */
+  align-items: center;
+  justify-content: center;
+  margin-top: 70px;
   flex-direction: column;
+}
+.firsttimelogin_child_container {
+  background-color: #fff;
+  box-sizing: border-box;
   border-radius: 10px;
   box-shadow: 0px 0px 4px rgb(172, 172, 172);
+  width: fit-content;
 }
 .each_choice {
   display: flex;
@@ -52,6 +60,9 @@
   font-weight: 500;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+}
+.firsttimelogin_btn_wrapper {
+  width: 100%;
 }
 .firsttimelogin_next_btn {
   text-transform: initial !important;
@@ -119,6 +130,9 @@
   border: 1px dashed var(--border-color);
   border-radius: 5px;
 }
+.ugossips_profile_pic_box:hover {
+  border-color: var(--link-color);
+}
 #ugossips_profile_pic {
   width: 100%;
   cursor: pointer;
@@ -133,4 +147,10 @@
   border: 1px solid var(--border-color);
   border-radius: 5px;
   cursor: pointer;
+}
+
+.first_time_login_error {
+  font-size: 14px;
+  color: red;
+  display: none;
 }

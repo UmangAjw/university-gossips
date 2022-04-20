@@ -1,8 +1,10 @@
 .eachspace {
   display: flex;
   justify-content: center;
+  align-items: center;
   flex-direction: column;
   box-sizing: border-box;
+  margin-top: 70px;
 }
 .eachspace-header-parent {
   padding: 15px;
@@ -37,9 +39,16 @@
 .space-questions {
   display: flex;
   flex-direction: column;
+  /* align-items: center; */
   width: 570px;
   box-sizing: border-box;
   margin-right: 15px;
+}
+.eachspace-emptyzone {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
 }
 .eachspace-widget {
   width: 210px;

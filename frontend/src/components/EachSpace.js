@@ -13,6 +13,7 @@ import EmptyZone from "./EmptyZone";
 import { useSelector } from "react-redux";
 import { selectUser } from "../features/userSlice";
 import ModeratorWidget from "./ModeratorWidget";
+import Page404 from "./Page404";
 
 function EachSpace() {
   const { slug } = useParams();
@@ -25,6 +26,7 @@ function EachSpace() {
   const [questions, setQuestions] = useState([]);
   const [moderatorUsername, setModeratorUsername] = useState("");
   const [followers, setFollowers] = useState([]);
+  const [followersWithTime, setFollowersWithTime] = useState({});
 
   const isMounted = true;
 
@@ -33,12 +35,15 @@ function EachSpace() {
       await axios
         .get("/api/spaces/eachSpace/" + slug)
         .then((res) => {
-          // console.log(res.data.data);
+          console.log(res.data.data);
           setQuestions(res.data.data);
+          let temp_data = res.data.data;
+          if (temp_data[1].length === 0) window.location.href = "/page-404";
           // console.log("Questions", questions);
         })
         .catch((e) => {
           console.log(e);
+          window.location.href = "/page-404";
         });
 
       await axios
@@ -50,16 +55,27 @@ function EachSpace() {
         .catch((e) => {
           console.log(e);
         });
+
+      await axios
+        .get("/api/spaces/getFollowersWithTime/" + slug)
+        .then((res) => {
+          // console.log(res.data.data);
+          setFollowersWithTime(res.data.data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     }
   }, []);
 
   useEffect(async () => {
-    if (moderatorDetails.length !== 0) {
+    if (isMounted && moderatorDetails.length !== 0) {
       const config = {
         headers: {
           "Content-Type": "application/json",
         },
       };
+      console.log("inside add mod");
       // let spaceFollowers =
       //   questions[1] && questions[1][0] && questions[1][0].followers
       //     ? questions[1][0].followers
@@ -74,26 +90,34 @@ function EachSpace() {
         .catch((e) => {
           console.log(e, "Error fetching user details from username");
         });
-
       if (currentModerators) {
-        if (
-          currentModerators.length === 0 ||
-          !currentModerators.includes(moderatorDetails.user.uid)
-        ) {
-          currentModerators.push(moderatorDetails.user.uid);
-          const body = {
-            moderators: currentModerators,
-          };
-          await axios
-            .put("/api/spaces/updateSpace/" + slug, body, config)
-            .then((res) => {
-              console.log("Moderator Added Successfully!");
-              window.location.href = "/space/" + slug;
-            })
-            .catch((e) => {
-              console.log(e);
-              alert("Error in adding moderator!");
-            });
+        if (moderatorDetails.user.uid === questions[1][0].user.uid) {
+          document.querySelector(
+            ".username_admin_moderator_modal_av"
+          ).style.display = "block";
+        } else {
+          if (currentModerators) {
+            if (!currentModerators.includes(moderatorDetails.user.uid)) {
+              currentModerators.push(moderatorDetails.user.uid);
+              const body = {
+                moderators: currentModerators,
+              };
+              await axios
+                .put("/api/spaces/updateSpace/" + slug, body, config)
+                .then((res) => {
+                  console.log("Moderator Added Successfully!");
+                  window.location.href = "/space/" + slug;
+                })
+                .catch((e) => {
+                  console.log(e);
+                  alert("Error in adding moderator!");
+                });
+            } else {
+              document.querySelector(
+                ".username_mod_moderator_modal_av"
+              ).style.display = "block";
+            }
+          }
         }
       }
     }
@@ -107,6 +131,7 @@ function EachSpace() {
       setQuestions([]);
       setFollowers([]);
       setModeratorUsername("");
+      setFollowersWithTime({});
     };
   }, []);
 
@@ -125,18 +150,28 @@ function EachSpace() {
   };
 
   const handleFollow = async () => {
-    console.log(followers);
+    console.log(followers, followersWithTime);
     const config = {
       headers: {
         "Content-Type": "application/json",
       },
     };
     let temp_followers = followers;
-    if (temp_followers !== undefined) {
+    let temp_followersWithTime = followersWithTime;
+
+    if (temp_followers !== undefined && temp_followersWithTime !== undefined) {
       if (!temp_followers.includes(user.uid)) {
+        const now = new Date();
+        const secondsSinceEpoch = Math.round(now.getTime() / 1000);
+        temp_followersWithTime[user.uid] = secondsSinceEpoch;
+
         temp_followers.push(user.uid);
+        setFollowers(temp_followers);
+        setFollowersWithTime(temp_followersWithTime);
+
         const body = {
           followers: temp_followers,
+          followersWithTime: temp_followersWithTime,
         };
         await axios
           .put("/api/spaces/updateSpace/" + slug, body, config)
@@ -152,9 +187,17 @@ function EachSpace() {
       } else {
         const index = temp_followers.indexOf(user.uid);
         temp_followers.splice(index, 1);
+
+        if (temp_followersWithTime[user.uid] !== undefined) {
+          delete temp_followersWithTime[user.uid];
+        }
+
         setFollowers(temp_followers);
+        setFollowersWithTime(temp_followersWithTime);
+
         const body = {
           followers: temp_followers,
+          followersWithTime: temp_followersWithTime,
         };
         await axios
           .put("/api/spaces/updateSpace/" + slug, body, config)
@@ -172,19 +215,30 @@ function EachSpace() {
   };
 
   const handleModerator = async () => {
-    if (questions && moderatorUsername) {
-      const usernameExists = await axios
-        .get("/api/userDetails/getuserbyusername/" + moderatorUsername)
-        .then((res) => {
-          console.log(res.data.data);
-          setModeratorDetails(res.data.data);
-          return true;
-        })
-        .catch((e) => {
-          console.log(e, "Error fetching user details from username");
-        });
+    let noWhiteModeratorUsername = moderatorUsername.replace(/^\s+|\s+$/g, "");
+    setModeratorUsername(noWhiteModeratorUsername);
 
-      console.log(moderatorDetails);
+    if (noWhiteModeratorUsername !== "") {
+      if (questions && moderatorUsername) {
+        const usernameExists = await axios
+          .get("/api/userDetails/getuserbyusername/" + moderatorUsername)
+          .then((res) => {
+            console.log(res.data.data);
+            if (res.data.data.length === 0) {
+              document.querySelector(
+                ".username_moderator_modal_nav"
+              ).style.display = "block";
+            } else setModeratorDetails(res.data.data);
+            return true;
+          })
+          .catch((e) => {
+            console.log(e, "Error fetching user details from username");
+          });
+
+        console.log(moderatorDetails);
+      }
+    } else {
+      alert("Please fill details properly.");
     }
   };
 
@@ -222,11 +276,11 @@ function EachSpace() {
   //   }
   // };
 
-  if (questions)
-    if (questions[0])
-      if (questions[0].length === 0)
-        document.querySelector(".space-questions").style.display = "none";
-      else document.querySelector(".space-no-questions").style.display = "none";
+  // if (questions)
+  //   if (questions[0])
+  //     if (questions[0].length === 0)
+  //       document.querySelector(".space-questions").style.display = "none";
+  //     else document.querySelector(".space-no-questions").style.display = "none";
 
   if (user) {
     if (user.uid) {
@@ -242,6 +296,10 @@ function EachSpace() {
 
   return (
     <div className="eachspace">
+      {/* {questions && questions[1] && questions[1]
+        ? questions[1].length
+        : JSON.stringify(questions)} */}
+
       <div className="eachspace-header">
         <div className="eachspace-banner-wrapper">
           <img
@@ -263,7 +321,7 @@ function EachSpace() {
           <div className="eachspace-header-wrapper">
             <div>
               <p className="eachspace-spacename">
-                {questions[1] ? questions[1][0].spaceName : ""}
+                {questions && questions[1] ? questions[1][0].spaceName : ""}
               </p>
               <p className="eachspace-spacedesc">
                 {questions[1] ? questions[1][0].spaceDesc : ""}
@@ -302,40 +360,56 @@ function EachSpace() {
       <div className="eachspace-wrapper-widget">
         <div className="eachspace-wrapper">
           <div className="space-questions">
-            {questions[0] && questions[1] && questions[1][0]
-              ? Object.values(questions[0]).map((postdata, i) => (
-                  <Post
-                    key={i}
-                    // postProfilePic={postdata.postProfilePic}
-                    // postProfileName={postdata.postProfileName}
-                    // postProfileBio={postdata.postProfileBio}
-                    spaceSlug={slug}
-                    spaceOwner={questions[1][0].user.uid}
-                    spaceModerators={questions[1][0].moderators}
-                    postUser={postdata[0].user}
-                    postUserCompleteDetails={postdata[2][0]}
-                    postTimestamp={postdata[0].createdAt}
-                    postQuestion={postdata[0].questionName}
-                    postAnswer={postdata[1]}
-                    postId={postdata[0]._id}
-                    postSlug={postdata[0].slug}
-                  />
-                ))
-              : ""}
+            {questions[0] &&
+            questions[0].length !== 0 &&
+            questions[1] &&
+            questions[1][0] ? (
+              Object.values(questions[0]).map((postdata, i) => (
+                <Post
+                  key={i}
+                  // postProfilePic={postdata.postProfilePic}
+                  // postProfileName={postdata.postProfileName}
+                  // postProfileBio={postdata.postProfileBio}
+                  postQuestionType={postdata[0].questionType}
+                  spaceSlug={slug}
+                  spaceOwner={questions[1][0].user.uid}
+                  spaceModerators={questions[1][0].moderators}
+                  spaceName={questions[1][0].spaceName}
+                  postUser={postdata[0].user}
+                  postUserCompleteDetails={postdata[2][0]}
+                  postTimestamp={postdata[0].createdAt}
+                  postQuestion={postdata[0].questionName}
+                  postAnswer={postdata[1]}
+                  postId={postdata[0]._id}
+                  postSlug={postdata[0].slug}
+                />
+              ))
+            ) : (
+              <div className="eachspace-emptyzone">
+                <EmptyZone
+                  heading1={"There are no questions over here."}
+                  heading2={"Start asking questions."}
+                />
+              </div>
+            )}
           </div>
-          <div className="space-no-questions">
-            <EmptyZone
-              heading1={"There are no questions over here."}
-              heading2={"Start asking questions."}
-            />
-          </div>
+          {/* <div className="space-no-questions">
+                <EmptyZone
+                  heading1={"There are no questions over here."}
+                  heading2={"Start asking questions."}
+                />
+              </div> */}
           <Modal
             open={isModalOpen}
             onClose={() => setisModalOpen(false)}
             center
             closeIcon={close}
           >
-            <AddQuestionModal spaceName={slug ? slug : ""} />
+            <AddQuestionModal
+              isModalOpen={isModalOpen}
+              setisModalOpen={setisModalOpen}
+              spaceName={slug ? slug : ""}
+            />
           </Modal>
           <Modal
             open={isModeratorModalOpen}
@@ -358,10 +432,30 @@ function EachSpace() {
                 <input
                   id="moderator_modal_input"
                   value={moderatorUsername}
-                  onChange={(e) => setModeratorUsername(e.target.value)}
+                  onChange={(e) => {
+                    setModeratorUsername(e.target.value);
+                    document.querySelector(
+                      ".username_admin_moderator_modal_av"
+                    ).style.display = "none";
+                    document.querySelector(
+                      ".username_mod_moderator_modal_av"
+                    ).style.display = "none";
+                    document.querySelector(
+                      ".username_moderator_modal_nav"
+                    ).style.display = "none";
+                  }}
                   placeholder="Enter username to Add Moderators"
                   type="text"
                 />
+                <p className="username_moderator_modal_nav first_time_login_error">
+                  This username doesnot exist.
+                </p>
+                <p className="username_admin_moderator_modal_av first_time_login_error">
+                  This username is already a admin.
+                </p>
+                <p className="username_mod_moderator_modal_av first_time_login_error">
+                  This username is already a moderator.
+                </p>
               </div>
 
               <div className="moderator_modal_footer">
@@ -390,6 +484,12 @@ function EachSpace() {
                     : ""
                 }
                 slug={slug}
+                spaceModeratorsIds={
+                  questions[0] && questions[1] && questions[1][0]
+                    ? questions[1][0].moderators
+                    : []
+                }
+                spaceName={slug}
               />
               <Widget />
             </div>

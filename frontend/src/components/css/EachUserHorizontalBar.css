@@ -1,0 +1,15 @@
+.each_user_horizontal_bar {
+  display: flex;
+  flex-direction: row;
+  flex: 0 0 170px;
+  position: sticky !important;
+  box-sizing: border-box;
+  top: 44px;
+  background-color: #fff;
+  z-index: 2;
+  box-sizing: border-box;
+  padding: 5px;
+  border: 1px solid var(--border-color);
+
+  /* height: calc(100vh - 100px) !important; */
+}

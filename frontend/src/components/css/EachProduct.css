@@ -1,6 +1,7 @@
 .each_product {
   display: flex;
   justify-content: center;
+  margin-top: 70px;
 }
 .each_product_container {
   display: flex;
@@ -77,10 +78,68 @@
 .address_modal {
   box-sizing: border-box;
   width: 660px;
-  height: 540px;
+  height: fit-content;
   border-radius: 15px !important;
   display: flex;
   flex-direction: column;
   padding: 10px 25px;
   box-sizing: border-box;
+}
+
+#address_modal_full_name,
+#address_modal_mobile_number,
+#address_modal_pincode,
+#address_modal_add_line1,
+#address_modal_add_line2,
+#address_modal_city,
+#address_modal_state,
+#address_modal_country {
+  box-sizing: border-box;
+  min-height: 40px;
+  width: 100%;
+  outline: none;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+.mobile_pincode_wrapper,
+.city_state_country_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.address_modal_mobile_number_wrapper,
+.address_modal_pincode_wrapper {
+  width: 49%;
+}
+
+.address_modal_city_wrapper,
+.address_modal_state_wrapper,
+.address_modal_country_wrapper {
+  width: 32%;
+}
+
+.address_header {
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+.address_header p {
+  color: var(--icon-color);
+  font-size: 15px;
+}
+
+.address_modal_btn {
+  width: fit-content !important;
+}
+
+.address_footer_buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+.address_footer {
+  margin-top: 10px;
 }

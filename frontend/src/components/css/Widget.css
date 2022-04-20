@@ -25,4 +25,5 @@
 .widget-navlink {
   text-decoration: none;
   color: inherit;
+  /* width: 100%; */
 }

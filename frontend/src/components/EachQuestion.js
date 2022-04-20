@@ -15,36 +15,73 @@ import parse from "html-react-parser";
 import Modal from "react-responsive-modal";
 import AddAnswerModal from "./AddAnswerModal";
 import Popper from "@material-ui/core/Popper";
+import { selectUser } from "../features/userSlice";
+import { useSelector } from "react-redux";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import Page404 from "./Page404";
 
-function EachQuestion() {
+function EachQuestion(props) {
   const { slug } = useParams();
   const [question, setQuestion] = useState([]);
   const [isModalOpen, setisModalOpen] = useState(false);
   const close = <CloseIcon />;
   const [anchorEl, setAnchorEl] = useState(null);
+  const user = useSelector(selectUser);
+  // const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorAnswerEl, setAnchorAnswerEl] = React.useState(null);
+  const isMounted = true;
 
   function handlePopperOpen(e) {
     setAnchorEl(anchorEl ? null : e.currentTarget);
   }
 
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleAnswerClose = () => {
+    setAnchorAnswerEl(null);
+  };
+  const handleAnswerClick = (event) => {
+    setAnchorAnswerEl(event.currentTarget);
+  };
+
   const open = Boolean(anchorEl);
   const idPopper = open ? "simple-popper" : undefined;
 
   useEffect(() => {
-    axios
-      .get("/api/questions/findbyslug/" + slug)
-      .then((res) => {
-        setQuestion(res.data.data);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+    if (isMounted) {
+      axios
+        .get("/api/questions/findbyslug/" + slug)
+        .then((res) => {
+          setQuestion(res.data.data);
+          console.log(res.data.data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
 
-    // console.log(question);
+      console.log(question);
+    }
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      setQuestion([]);
+      setisModalOpen(false);
+      setAnchorEl(null);
+      setAnchorAnswerEl(null);
+    };
   }, []);
   // console.log(question[0][0]);
   return (
     <div className="each-question">
+      {/* {question && question[0] && question[0].length ? question[0].length : ""} */}
+
       <div className="each-question-main">
         <div className="each-question-question">
           <h3 className="each-question-txt">
@@ -211,9 +248,61 @@ function EachQuestion() {
                     <Popper id={idPopper} open={open} anchorEl={anchorEl}>
                       <div className="share-btn-popper">Copy link</div>
                     </Popper>
-                    <div className="post_more_btn">
+                    {/* <div className="post_more_btn">
                       <MoreHorizOutlinedIcon className="post_more_pic" />
-                    </div>
+                    </div> */}
+
+                    {user && user.uid === eachAnswer.user.uid ? (
+                      <div className="post_three_dot_menu">
+                        <Button
+                          aria-controls="simple-menu"
+                          aria-haspopup="true"
+                          onClick={handleAnswerClick}
+                          className="post_menu_three_dot_btn"
+                        >
+                          <MoreHorizOutlinedIcon className="post_menu_three_dot_pic" />
+                        </Button>
+                        <Menu
+                          id="simple-menu"
+                          anchorEl={anchorAnswerEl}
+                          keepMounted
+                          open={Boolean(anchorAnswerEl)}
+                          onClose={handleAnswerClose}
+                        >
+                          <MenuItem
+                            className="post_menu"
+                            onClick={async () => {
+                              handleAnswerClose();
+
+                              if (
+                                window.confirm(
+                                  `"Are you sure you want to delete this answer?"`
+                                )
+                              ) {
+                                await axios
+                                  .delete(
+                                    "/api/answers/deletebyid/" + eachAnswer._id
+                                  )
+                                  .then((res) => {
+                                    console.log(res.msg);
+                                    window.location.href = "/";
+                                  })
+                                  .catch((e) => {
+                                    console.log(e);
+                                  });
+                              }
+                            }}
+                          >
+                            <span className="post_menu_text">
+                              Delete Answer
+                            </span>
+                          </MenuItem>
+                          {/* <MenuItem>Delete Question from Space</MenuItem> */}
+                        </Menu>
+                      </div>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 </div>
               </div>
@@ -221,7 +310,7 @@ function EachQuestion() {
           : ""}
       </div>
       {/* <div className="each-question-empty-div"></div> */}
-      <Widget />
+      <Widget widgetWidth="210px" />
       <Modal
         open={isModalOpen}
         onClose={() => setisModalOpen(false)}
@@ -229,10 +318,12 @@ function EachQuestion() {
         center
       >
         <AddAnswerModal
+          from={"EachQuestion"}
+          postSlug={slug}
           postQuestion={question[0] ? question[0][0].questionName : ""}
           postAnswer={""}
           postTimestamp={question[0] ? question[0][0].createdAt : ""}
-          postId={question[0] ? question[0][0].postId : ""}
+          postId={question[0] ? question[0][0]._id : ""}
         />
       </Modal>
     </div>

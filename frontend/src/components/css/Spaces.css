@@ -1,0 +1,74 @@
+.spaces {
+  display: flex;
+  flex-direction: column;
+  margin-top: 70px;
+  justify-content: center;
+  align-items: center;
+}
+.spaces_child_container {
+  width: fit-content;
+}
+
+.spaces_header {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.spaces_header_top_card {
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  width: 100%;
+  /* width: 1000px; */
+  flex-direction: column;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid var(--border-color);
+}
+.spaces_header_top_card_bg {
+  position: absolute;
+  overflow: hidden;
+  /* width: 19vw; */
+  bottom: 0;
+  right: 0;
+  width: 50%;
+}
+.spaces_header_top_card_btn_wrapper {
+  margin-top: 25px;
+  color: var(--link-color);
+  display: flex;
+}
+.space_header_top_card_create_btn {
+  margin-right: 10px;
+  cursor: pointer;
+}
+.space_header_top_card_create_btn,
+.space_header_top_card_discover_btn {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--link-color);
+  border-radius: 20px;
+  padding: 3px 10px;
+}
+.spaces_header_top_card_create_svg,
+.spaces_header_top_card_discover_svg {
+  height: 20px;
+  margin-right: 2px;
+}
+
+.spaces_all_tiles {
+  display: grid;
+  /* grid-template-columns: repeat(4, 1fr); */
+  grid-template-columns: auto auto auto auto;
+  grid-gap: 10px;
+}
+
+.spaces_content {
+  margin-top: 20px;
+}
+
+.spaces_content > p {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-weight: 500;
+}

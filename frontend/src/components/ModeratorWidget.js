@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../features/userSlice";
 
 function ModeratorWidget(props) {
-  console.log(props.owner);
+  // console.log(props.owner);
   let [moderatorWidgetDatas, setModeratorWidgetDatas] = useState([]);
   let [spaceOwner, setSpaceOwner] = useState();
   let isMounted = true;
@@ -20,7 +20,7 @@ function ModeratorWidget(props) {
       await axios
         .get("/api/userDetails/getuserbyid/" + props.owner.uid)
         .then((res) => {
-          console.log(res.data.data);
+          // console.log(res.data.data);
           setSpaceOwner(res.data.data);
         })
         .catch((e) => {
@@ -34,7 +34,7 @@ function ModeratorWidget(props) {
       await axios
         .get("/api/spaces/getModeratorsObject/" + props.slug)
         .then((res) => {
-          console.log(res.data.data);
+          // console.log(res.data.data);
           setModeratorWidgetDatas(res.data.data);
         })
         .catch((e) => {
@@ -70,13 +70,11 @@ function ModeratorWidget(props) {
           ""
         )}
       </div>
-      <div className="moderator_wodget_content">
-        <NavLink
-          className={"widget-navlink"}
-          target="_top"
-          to={`/user/${spaceOwner?.username}`}
-        >
+      {user ? (
+        <div className="moderator_wodget_content">
           <ModeratorWidgetItems
+            userIsOwnerOrModerator={false}
+            moderatorUsername={spaceOwner?.username}
             widgetImg={
               props && spaceOwner && spaceOwner?.profilePic
                 ? "/img/userprofilepics/" + spaceOwner?.profilePic
@@ -84,15 +82,9 @@ function ModeratorWidget(props) {
             }
             widgetHeading={spaceOwner?.name}
             widgetSubheading={spaceOwner?.username}
+            widgetAdmin={true}
           />
-        </NavLink>
-        {Object.values(moderatorWidgetDatas).map((moderatorWidgetData, i) => (
-          <NavLink
-            key={i}
-            className={"widget-navlink"}
-            target="_top"
-            to={`/user/${moderatorWidgetData.username}`}
-          >
+          {Object.values(moderatorWidgetDatas).map((moderatorWidgetData, i) => (
             <ModeratorWidgetItems
               key={i}
               widgetImg={
@@ -100,12 +92,19 @@ function ModeratorWidget(props) {
                   ? "/img/userprofilepics/" + moderatorWidgetData.profilePic
                   : "/"
               }
+              moderatorUsername={moderatorWidgetData.username}
               widgetHeading={moderatorWidgetData.name}
               widgetSubheading={moderatorWidgetData.username}
+              moderatorId={moderatorWidgetData.user.uid}
+              userIsOwnerOrModerator={user.uid === spaceOwner?.user.uid}
+              spaceName={props.spaceName}
+              spaceModeratorsIds={props.spaceModeratorsIds}
             />
-          </NavLink>
-        ))}
-      </div>
+          ))}
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 }

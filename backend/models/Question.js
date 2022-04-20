@@ -4,6 +4,7 @@ const QuestionSchema = new mongoose.Schema({
   questionName: String,
   questionUrl: String,
   createdAt: Number,
+  questionType: Boolean,
 
   answers: {
     type: mongoose.Schema.Types.ObjectId,

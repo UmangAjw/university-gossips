@@ -124,4 +124,22 @@ router.get("/getallorders", async (req, res) => {
     });
   }
 });
+
+router.put("/updateOrderDetails/:orderId", async (req, res) => {
+  let data = await orderDetailsDB.findOneAndUpdate(
+    { _id: req.params.orderId },
+    req.body,
+    { new: true }
+  );
+  console.log(data);
+  if (data) {
+    res.json({ msg: "Order ret...", data: data, status: 200 });
+  } else {
+    res.json({
+      msg: "Invalid order id.",
+      data: req.params,
+      status: -1,
+    });
+  }
+});
 module.exports = router;

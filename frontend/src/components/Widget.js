@@ -42,27 +42,24 @@ function Widget(props) {
   return (
     <div className="widget" style={{ flex: "0 0 " + props.widgetWidth }}>
       <div className="widget_header">
-        <h4 className="widget_header_txt">Spaces to follow</h4>
+        <h4 className="widget_header_txt">Spaces you might like</h4>
       </div>
       <div className="widget_content">
         {Object.values(widgetitemsdatas).map((widgetitemsdata, i) => (
-          <NavLink
+          <WidgetItems
+            from={props.from}
+            user={props.user}
             key={i}
-            className={"widget-navlink"}
-            target="_top"
-            to={`/space/${widgetitemsdata.slug}`}
-          >
-            <WidgetItems
-              key={i}
-              widgetSpaceImg={
-                widgetitemsdata && widgetitemsdata.spaceProfilePic
-                  ? "/img/spaceprofilepics/" + widgetitemsdata.spaceProfilePic
-                  : "/"
-              }
-              widgetSpaceHeading={widgetitemsdata.spaceName}
-              widgetSpaceSubheading={widgetitemsdata.spaceDesc}
-            />
-          </NavLink>
+            widgetSpaceImg={
+              widgetitemsdata && widgetitemsdata.spaceProfilePic
+                ? "/img/spaceprofilepics/" + widgetitemsdata.spaceProfilePic
+                : "/"
+            }
+            widgetSpaceHeading={widgetitemsdata.spaceName}
+            widgetSpaceSubheading={widgetitemsdata.spaceDesc}
+            widgetSpaceId={widgetitemsdata._id}
+            widgetSpaceSlug={widgetitemsdata.slug}
+          />
         ))}
       </div>
     </div>

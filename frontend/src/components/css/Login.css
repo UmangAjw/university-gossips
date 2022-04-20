@@ -59,7 +59,9 @@
 }
 .login-left {
   width: 50%;
+  /* align-self: center; */
 }
+
 .login-google,
 .login-facebook {
   padding: 10px;
@@ -151,7 +153,8 @@
 }
 .login-right-last {
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
+  justify-content: flex-end;
 }
 .login-footer {
   box-sizing: border-box;

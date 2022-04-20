@@ -1,10 +1,11 @@
 .FollowingPage {
   display: flex;
   justify-content: center;
+  margin-top: 70px;
 }
 .following-feed {
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   flex-direction: column;
   margin-right: 20px;
   width: 570px;

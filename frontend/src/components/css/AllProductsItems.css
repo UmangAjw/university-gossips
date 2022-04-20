@@ -18,8 +18,9 @@
 .allproducts_items_info {
   background-color: white;
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   padding: 10px;
+  justify-content: space-between;
 }
 .allproducts_items_pic_div {
   width: 260px;

@@ -11,9 +11,17 @@
 .all_users_name {
   display: flex;
   width: var(--userrank-col2);
+  /* width: fit-content; */
 
   align-items: center;
 }
+.all_users_name_txt {
+  width: fit-content;
+}
 .all_users_delete {
   width: var(--userrank-col3);
+}
+.delete_post_by_user_pic {
+  cursor: pointer;
+  padding: 0px 2px;
 }

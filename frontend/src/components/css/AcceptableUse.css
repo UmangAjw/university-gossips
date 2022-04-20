@@ -1,0 +1,21 @@
+.ugossips_acceptable_use {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 70px;
+}
+
+.ugossips_acceptable_use_child_container {
+  width: 800px;
+}
+
+hr {
+  margin: 10px 0px;
+}
+
+.ugossips_acceptable_use_content {
+  text-align: justify;
+}
+.ugossips_acceptable_use_content p {
+  margin-bottom: 15px;
+}

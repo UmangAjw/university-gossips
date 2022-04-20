@@ -29,6 +29,7 @@ import { useDispatch } from "react-redux";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import axios from "axios";
+import { ADMIN_USER_UID } from "./auth/Constants";
 
 function GossipsNavbar() {
   const [isModalOpen, setisModalOpen] = useState(false);
@@ -36,10 +37,25 @@ function GossipsNavbar() {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const [userDetails, setUserDetails] = useState([]);
+  const [URL, setURL] = useState("");
 
   const [posts, setPosts] = useState([]);
 
   let isMounted = true;
+
+  // useEffect(async () => {
+  //   if (user && URL !== "/firstTimeLogin")
+  //     await axios
+  //       .get("/api/userDetails/getuserbyid/" + user.uid)
+  //       .then((res) => {
+  //         if (res.data.data.length === 0) {
+  //           window.location.href = "/firstTimeLogin";
+  //         }
+  //       })
+  //       .catch((e) => {
+  //         console.log(e);
+  //       });
+  // }, []);
 
   useEffect(async () => {
     if (isMounted) {
@@ -61,7 +77,7 @@ function GossipsNavbar() {
       await axios
         .get("/api/userDetails/getuserbyid/" + user.uid)
         .then((res) => {
-          console.log(res.data.data);
+          // console.log(res.data.data);
           setUserDetails(res.data.data);
         })
         .catch((e) => {
@@ -74,7 +90,7 @@ function GossipsNavbar() {
     return () => {
       setisModalOpen(false);
       setUserDetails([]);
-
+      setURL("");
       setPosts([]);
     };
   }, []);
@@ -97,35 +113,66 @@ function GossipsNavbar() {
     let gNavbar_plus_btnEl = document.querySelector(".gNavbar_plus_btn");
     let gNavbar_overlayEl = document.querySelector(".gNavbar_overlay");
     let gNavbar_input_fieldEl = document.querySelector(".gNavbar_input_field");
-    let gNavbar_search_results = document.querySelector(
-      ".MuiAutocomplete-popper"
-    );
+    // let gNavbar_search_results = document.querySelector(
+    //   ".MuiAutocomplete-popper"
+    // );
 
     // gNavbar_plus_btnEl.style.display = "none";
     // gNavbar_input_fieldEl.style.width = "300px";
     gNavbar_overlayEl.style.display = "block";
-    gNavbar_search_results.style.display = "block !important";
+    // gNavbar_search_results.style.display = "block !important";
   };
   let BtnShow = () => {
     let gNavbar_plus_btnEl = document.querySelector(".gNavbar_plus_btn");
     let gNavbar_overlayEl = document.querySelector(".gNavbar_overlay");
-    let gNavbar_search_results = document.querySelector(
-      ".MuiAutocomplete-popper"
-    );
+    // let gNavbar_search_results = document.querySelector(
+    //   ".MuiAutocomplete-popper"
+    // );
 
     // gNavbar_plus_btnEl.style.display = "flex";
     gNavbar_overlayEl.style.display = "none";
-    gNavbar_search_results.style.display = "none !important";
+    // gNavbar_search_results.style.display = "none !important";
+  };
+
+  function profileMenu() {
+    document.getElementById("myProfileDropdown").classList.toggle("show");
+  }
+
+  window.onClick = function (event) {
+    if (!event.target.matches(".gNavbar_avatar")) {
+      var dropdowns = document.getElementsByClassName(
+        "profile_dropdown_content"
+      );
+      var i;
+      for (i = 0; i < dropdowns.length; i++) {
+        var openDropdown = dropdowns[i];
+        if (openDropdown.classList.contains("show")) {
+          openDropdown.classList.remove("show");
+        }
+      }
+    }
   };
 
   return (
     <div className="gNavbar-wrapper">
       <div className="gNavbar">
         <div className="gNavbar-content">
-          <div className="gNavbar_logo">
-            <h2 className="text-logo">uGossips</h2>
-            {/* <img className="main-logo" src="/img/quora-logo.png" alt="" /> */}
-          </div>
+          <NavLink
+            to={"/"}
+            exact
+            target={"_top"}
+            style={{
+              textDecoration: "none",
+              color: "inherit",
+              height: "auto",
+              display: "flex",
+            }}
+          >
+            <div className="gNavbar_logo">
+              <h2 className="text-logo">uGossips</h2>
+              {/* <img className="main-logo" src="/img/quora-logo.png" alt="" /> */}
+            </div>
+          </NavLink>
           <div className="gNavbar_icons">
             <Tooltip title="Home">
               <NavLink exact to="/" className="navbar_selected">
@@ -253,7 +300,7 @@ function GossipsNavbar() {
                 <Button className="gNavbar_plus_btn_a">Redeem shop</Button>
               </NavLink>
             </div>
-            <div onClick={logOutBtn} className="gNavbar_avatar ">
+            <div onClick={profileMenu} className="gNavbar_avatar ">
               <Avatar
                 src={
                   userDetails && userDetails.profilePic
@@ -263,6 +310,40 @@ function GossipsNavbar() {
                 className="gNavbar_svg user_img"
               />
             </div>
+            {userDetails ? (
+              <div className="profile_dropdown">
+                <div
+                  id="myProfileDropdown"
+                  className="profile_dropdown_content"
+                >
+                  <NavLink
+                    className={"profile_dropdown_link"}
+                    to={"/user/" + userDetails.username}
+                  >
+                    View Public Profile
+                  </NavLink>
+                  <NavLink
+                    target={"_top"}
+                    className={"profile_dropdown_link"}
+                    to="/account-settings"
+                  >
+                    Account Settings
+                  </NavLink>
+                  {user && user.uid === ADMIN_USER_UID ? (
+                    <NavLink className={"profile_dropdown_link"} to="/admin/">
+                      Admin Panel
+                    </NavLink>
+                  ) : (
+                    ""
+                  )}
+                  <div onClick={logOutBtn} className={"profile_dropdown_link"}>
+                    Logout
+                  </div>
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
             <div className="gNavbar_add_btn">
               <Button
                 onClick={() => setisModalOpen(true)}
@@ -274,7 +355,7 @@ function GossipsNavbar() {
           </div>
         </div>
       </div>
-      <div className="gNavbar_overlay"></div>
+      <div style={{ display: "none" }} className="gNavbar_overlay"></div>
       {/* <Modal
         open={isModalOpen}
         onClose={() => setisModalOpen(false)}
@@ -328,7 +409,11 @@ function GossipsNavbar() {
         closeIcon={close}
         center
       >
-        <AddQuestionModal spaceName={""} />
+        <AddQuestionModal
+          isModalOpen={isModalOpen}
+          setisModalOpen={setisModalOpen}
+          spaceName={""}
+        />
       </Modal>
     </div>
   );

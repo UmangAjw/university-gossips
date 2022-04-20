@@ -13,7 +13,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { selectUser } from "../features/userSlice";
 import { useSelector } from "react-redux";
 
-function Feed() {
+function Feed(props) {
   const user = useSelector(selectUser);
 
   const [isModalOpen, setisModalOpen] = useState(false);
@@ -78,9 +78,9 @@ function Feed() {
   // }, []);
 
   const fetchData = async () => {
-    getTotalPages();
-    console.log(totalPages);
-    // console.log(page);
+    await getTotalPages();
+    // console.log("Fetch data called");
+    console.log(page, reloadPostsPerRender);
     await axios
       .get(
         "/api/questions/findquestionspagebypage/" +
@@ -95,9 +95,11 @@ function Feed() {
           Object.keys(res.data).length === 0
           // || page > totalPages
         ) {
+          console.log("Stop ", page);
           setHasMore(false);
           setPage(1);
         }
+        console.log(res.data);
         setPosts([...posts, ...res.data]);
         console.log(posts);
       })
@@ -107,9 +109,9 @@ function Feed() {
     setPage(page + 1);
   };
 
-  useEffect(() => {
+  useEffect(async () => {
     if (isMounted) {
-      fetchData();
+      await fetchData();
     }
   }, []);
 
@@ -136,9 +138,13 @@ function Feed() {
           hasMore={hasMore}
           loader={<h4>Loading...</h4>}
           endMessage={
-            <p style={{ textAlign: "center" }}>
-              <b>Yay! You have seen it all</b>
-            </p>
+            <div style={{ textAlign: "center" }}>
+              <div className="end-game">
+                <img className="end-game-img" src="/img/end_game.png" alt="" />
+                <h4>You've reached the end of your feed.</h4>
+                <p>Add some more questions to discover</p>
+              </div>
+            </div>
           }
           // below props only if you need pull down functionality
           // refreshFunction={this.refresh}
@@ -156,6 +162,7 @@ function Feed() {
           {Object.values(posts).map((postdata, i) => (
             <Post
               key={i}
+              from={props.from}
               // postProfilePic={postdata.postProfilePic}
               // postProfileName={postdata.postProfileName}
               // postProfileBio={postdata.postProfileBio}
@@ -163,6 +170,8 @@ function Feed() {
               postUserCompleteDetails={postdata.userCompleteDetails[0]}
               postTimestamp={postdata.createdAt}
               postQuestion={postdata.questionName}
+              postSpaceName={postdata.spaceName}
+              postQuestionType={postdata.questionType}
               postAnswer={postdata.allAnswers}
               postId={postdata._id}
               postSlug={postdata.slug}
@@ -176,7 +185,10 @@ function Feed() {
         closeIcon={close}
         center
       >
-        <AddQuestionModal spaceName={""} />
+        <AddQuestionModal
+          isModalOpen={isModalOpen}
+          setisModalOpen={setisModalOpen}
+        />
       </Modal>
     </div>
   );

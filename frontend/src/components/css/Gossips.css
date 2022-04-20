@@ -1,6 +1,7 @@
 .gossips-home {
   display: flex;
   justify-content: center;
+  margin-top: 70px;
 }
 
 @media only screen and (max-width: 1000px) {

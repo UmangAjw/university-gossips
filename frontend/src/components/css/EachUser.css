@@ -1,17 +1,31 @@
 .eachuser {
   display: flex;
+  margin-top: 70px;
+  /* align-items: center; */
+  justify-content: center;
+}
+.eachuser_child_container {
+  display: flex;
   flex-direction: row;
+  /* width: fit-content; */
 }
 .eachuser_left {
   width: 550px;
+  margin-right: 10px;
+}
+.each_user_answers_emptyzone {
+  display: flex;
+  align-items: center;
 }
 .eachuser_info {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   border: 1px solid var(--border-color);
+  /* border-bottom-color: none; */
+  border-bottom: none;
   padding: 15px;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
   background-color: #fff;
   box-sizing: border-box;
 }

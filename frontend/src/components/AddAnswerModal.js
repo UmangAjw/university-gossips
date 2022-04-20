@@ -6,12 +6,13 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { selectUser } from "../features/userSlice";
 import moment from "moment";
+import Parser from "html-react-parser";
 
 function AddAnswerModal(props) {
   const [answer, setAnswer] = useState("");
   const user = useSelector(selectUser);
   const [userDetails, setUserDetails] = useState([]);
-
+  const spaceName = props.postQuestionSpaceName;
   const isMounted = true;
   useEffect(async () => {
     if (isMounted && user) {
@@ -35,67 +36,114 @@ function AddAnswerModal(props) {
 
   const handleReactQuill = (e) => {
     setAnswer(e);
+    // document.querySelector(".answer_name_length_error").style.display = "none";
   };
 
   const submitAnswer = async () => {
-    if (props.postId && answer !== "") {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-      let voters = {};
-      const body = {
-        answer: answer,
-        voteCounter: 0,
-        questionId: props.postId,
-        user: user,
-        voters: voters,
-      };
+    let flag = 1;
+    let noWhiteAnswer;
+    // noWhiteAnswer = answer.replace(/(<([^>]+)>)/gi, ""); // for removing html tags
+    noWhiteAnswer = answer.replace(/(<([^>]+)>)/gi, ""); // for extracting value in between html tags
+    noWhiteAnswer = noWhiteAnswer.replace(/^\s+|\s+$/g, ""); // for removing white space
 
-      let currentXp = await axios
-        .get("/api/userDetails/getuserbyid/" + user.uid, config)
-        .then((res) => {
-          console.log("Xp inside promise", typeof res.data.data.xp);
-          return res.data.data.xp;
-        })
-        .catch((e) => {
-          console.log(e);
-          alert("Error in getting xp!");
-        });
+    if (noWhiteAnswer.length === 0) setAnswer(noWhiteAnswer);
 
-      const answerAddedSuccessfully = await axios
-        .post("/api/answers", body, config)
-        .then((res) => {
-          console.log(res.data);
-          // alert("Answer added Successfully!");
-          return true;
-        })
-        .catch((e) => {
-          console.log(e);
-          alert("Error adding answer!");
-        });
-
-      if (answerAddedSuccessfully && Number.isInteger(currentXp)) {
-        console.log("Inside question added ");
-        currentXp += 15;
-
+    if (noWhiteAnswer.length < 6 || noWhiteAnswer.length > 1500) {
+      alert("Answer name character length must be between 6 to 1500");
+      flag = 0;
+    }
+    console.log(flag, props.postId);
+    if (flag && noWhiteAnswer !== "" && props.postId && answer !== "") {
+      console.log(answer);
+      if (flag) {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        let voters = {};
         const body = {
-          xp: currentXp,
+          answer: answer,
+          voteCounter: 0,
+          questionId: props.postId,
+          user: user,
+          voters: voters,
         };
 
-        await axios
-          .put("/api/userDetails/updateUserDetails/" + user.uid, body, config)
+        let [currentXp, xpTransactions] = await axios
+          .get("/api/userDetails/getuserbyid/" + user.uid, config)
           .then((res) => {
-            console.log("15 Xp rewarded", currentXp);
-
-            alert("15 Xp rewarded!");
-            window.location.href = "/";
+            return [res.data.data.xp, res.data.data.xpTransactions];
           })
           .catch((e) => {
             console.log(e);
-            alert("Error in adding xp!");
+            alert("Error in getting xp!");
           });
+
+        const answerAddedSuccessfully = await axios
+          .post("/api/answers", body, config)
+          .then((res) => {
+            console.log(res.data);
+            // alert("Answer added Successfully!");
+            return true;
+          })
+          .catch((e) => {
+            console.log(e);
+            alert("Error adding answer!");
+            window.location.href = "/";
+          });
+
+        if (answerAddedSuccessfully && Number.isInteger(currentXp)) {
+          const now = new Date();
+          let currentDate = now.toDateString();
+          const countOccurrences = (arr, val) =>
+            arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
+
+          if (countOccurrences(xpTransactions, currentDate) < 5) {
+            const now = new Date();
+            let currentDate = [...xpTransactions, now.toDateString()];
+
+            console.log("Inside question added ");
+            currentXp += 5;
+
+            const body = {
+              xp: currentXp,
+              xpTransactions: currentDate,
+            };
+
+            await axios
+              .put(
+                "/api/userDetails/updateUserDetails/" + user.uid,
+                body,
+                config
+              )
+              .then((res) => {
+                console.log("5 Xp rewarded", currentXp);
+
+                alert("Answer added successfully & 5 Xp rewarded!");
+                // if (spaceName === undefined) window.location.href = "/";
+                if (props.postSlug !== undefined)
+                  window.location.href = "/question/" + props.postSlug;
+                else window.location.href = "/";
+              })
+              .catch((e) => {
+                console.log(e);
+                alert("Error in adding xp!");
+                window.location.href = "/";
+              });
+          } else {
+            if (countOccurrences(xpTransactions, currentDate) >= 5) {
+              console.log("inside else");
+
+              alert(
+                "Answer added successfully! XP not rewarded as you have reached the daily limit of getting XP."
+              );
+              if (props.postSlug !== undefined)
+                window.location.href = "/question/" + props.postSlug;
+              else window.location.href = "/";
+            }
+          }
+        }
       }
     }
   };
@@ -130,9 +178,17 @@ function AddAnswerModal(props) {
             className="modal_answer_quill"
             placeholder="Write your answer"
           />
+          {/* <p className="answer_name_length_error first_time_login_error">
+            Answer name character length must be between 6 to 1500
+          </p> */}
         </div>
         <div className="modal_footer_buttons">
-          <Button className="modal_footer_cancel">Cancel</Button>
+          <Button
+            onClick={() => props.setisModalOpen(false)}
+            className="modal_footer_cancel"
+          >
+            Cancel
+          </Button>
           <Button onClick={submitAnswer} className="modal_footer_add_a">
             Add answer
           </Button>

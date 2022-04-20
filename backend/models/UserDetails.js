@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const UserDetailSchema = new mongoose.Schema({
   user: mongoose.Schema.Types.Mixed,
   xp: Number,
+  xpTransactions: [String],
   username: {
     type: String,
     unique: true,

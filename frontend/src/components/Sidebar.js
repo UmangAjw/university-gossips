@@ -114,18 +114,20 @@ function Sidebar() {
       </div>
 
       <div className="sidebar-discover-btn-div">
-        <Button className="sidebar_discover_btn">
-          <ExploreOutlinedIcon className="sidebar_discover_btn_explore"></ExploreOutlinedIcon>
-          &ensp;Discover Spaces
-        </Button>
+        <NavLink className={"sidebar-navlink"} target="_top" to={`/spaces`}>
+          <Button className="sidebar_discover_btn">
+            <ExploreOutlinedIcon className="sidebar_discover_btn_explore"></ExploreOutlinedIcon>
+            &ensp;Discover Spaces
+          </Button>
+        </NavLink>
       </div>
       <div className="sidebar-bottom">
         <hr className="sidebar-bottom-divider" />
         <div className="sidebar-bottom-links">
-          <NavLink to="/">About</NavLink> -&nbsp;<NavLink to="/">Terms</NavLink>{" "}
-          -&nbsp;
-          <NavLink to="/">Privacy</NavLink> -&nbsp;{" "}
-          <NavLink to="/">Acceptable Use</NavLink> -&nbsp;{" "}
+          <NavLink to="/about">About</NavLink> -&nbsp;
+          <NavLink to="/terms">Terms</NavLink> -&nbsp;
+          <NavLink to="/privacy">Privacy</NavLink> -&nbsp;{" "}
+          <NavLink to="/acceptable-use">Acceptable Use</NavLink> -&nbsp;{" "}
           <NavLink to="/refer-and-earn">Refer & Earn</NavLink>
         </div>
       </div>

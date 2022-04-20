@@ -28,13 +28,17 @@ function ManageOrders() {
   }, []);
 
   return (
-    <div style={{ display: "flex", "justify-content": "center" }}>
+    <div
+      style={{ display: "flex", justifyContent: "center", marginTop: "70px" }}
+    >
       <AdminSidebar />
       {yourOrders.length !== 0 ? (
         <div className="your_orders_container">
           {Object.values(yourOrders).map((yourOrder, i) => (
             <OrderItems
+              from="OrderItems"
               key={i}
+              orderId={yourOrder && yourOrder[0] ? yourOrder[0]._id : undefined}
               user={yourOrder && yourOrder[0] ? yourOrder[0].user : undefined}
               productId={
                 yourOrder && yourOrder[0] ? yourOrder[0].productId : undefined

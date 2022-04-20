@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import GossipsNavbar from "./GossipsNavbar";
 import Sidebar from "./Sidebar";
 import Feed from "./Feed";
+import FeedTemp from "./FeedTemp";
 import Widget from "./Widget";
 import "./css/Gossips.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -15,14 +16,14 @@ import axios from "axios";
 
 function Gossips() {
   const user = useSelector(selectUser);
+  const isMounted = true;
 
   useEffect(async () => {
-    if (user)
+    if (user && isMounted)
       await axios
         .get("/api/userDetails/getuserbyid/" + user.uid)
         .then((res) => {
           if (res.data.data.length === 0) {
-            console.log("inside");
             window.location.href = "/firstTimeLogin";
           }
         })
@@ -30,6 +31,7 @@ function Gossips() {
           console.log(e);
         });
   }, []);
+
   return (
     // <div className="gossips">
     //   <Router>
@@ -87,8 +89,9 @@ function Gossips() {
     <div className="gossips-home">
       {/* <GossipsNavbar /> */}
       <Sidebar />
-      <Feed />
-      <Widget widgetWidth="210px" />
+      {/* <Feed /> */}
+      <FeedTemp />
+      <Widget from={"Gossips"} user={user} widgetWidth="210px" />
     </div>
   );
 }

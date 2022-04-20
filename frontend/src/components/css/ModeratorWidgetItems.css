@@ -22,3 +22,15 @@
 .moderator_widget_item:hover {
   background-color: var(--hover-color);
 }
+
+.moderator_widget_item_heading_wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.moderator_widget_item_txt {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}

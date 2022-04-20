@@ -21,6 +21,7 @@ router.post("/", async (req, res) => {
         user: req.body.user,
         slug: req.body.slug,
         followers: req.body.followers,
+        followersWithTime: req.body.followersWithTime,
         moderators: req.body.moderators,
         createdAt: secondsSinceEpoch,
       })
@@ -42,6 +43,28 @@ router.post("/", async (req, res) => {
       message: "Error while creating space",
     });
   }
+});
+
+router.delete("/deletebyid/:spaceId", async (req, res) => {
+  spaceDB.deleteOne({ _id: req.params.spaceId }, (err, data) => {
+    if (err) {
+      res.json({ data: err, msg: "SMW", status: -1 });
+    } else {
+      if (data.deletedCount == 0) {
+        res.json({
+          data: req.params,
+          msg: "Invalid space id!",
+          status: 200,
+        });
+      } else {
+        res.json({
+          data: data,
+          msg: "Space Deleted Successfully!",
+          status: 200,
+        });
+      }
+    }
+  });
 });
 
 router.post(
@@ -143,6 +166,92 @@ router.get("/eachSpace/:slug", async (req, res) => {
   }
 });
 
+router.get("/eachSpace2/:slug", async (req, res) => {
+  let data = [];
+  let spaceInfo = await spaceDB.find({ slug: req.params.slug });
+
+  if (data) {
+    res.json({
+      msg: "Question ret...",
+      data: [data, spaceInfo],
+      status: 200,
+    });
+  } else {
+    res.json({
+      msg: "Invalid slug.",
+      data: req.params,
+      status: -1,
+    });
+  }
+});
+
+router.get("/eachSpaceQuestionDetails/:slug", async (req, res) => {
+  let data = [];
+  let questions = await questionDB.find({ spaceName: req.params.slug });
+  for (let i = 0; i < questions.length; i++) {
+    let post = [];
+    let questionArr = [];
+
+    questionArr.push(questions[i]);
+
+    let userIdOfEachQuestion = questions[i].user.uid;
+    let userDetailsOfEachQuestion = await userDetailsDB.findOne({
+      "user.uid": userIdOfEachQuestion,
+    });
+
+    questionArr.push(userDetailsOfEachQuestion);
+
+    post.push(questionArr);
+
+    let idOfQuestion = questions[i]._id;
+    let answers = await answerDB.find({ questionId: idOfQuestion });
+
+    let answersWithCompleteDetails = [];
+    for (let i = 0; i < answers.length; i++) {
+      let eachAnswer = answers[i];
+
+      let userIdOfEachAnswer = answers[i].user.uid;
+      let userDetailsOfEachAnswer = await userDetailsDB.findOne({
+        "user.uid": userIdOfEachAnswer,
+      });
+      // eachAnswer["userDetails"] = userDetailsOfEachAnswer;
+      let userDetailsObj = { userDetails: userDetailsOfEachAnswer };
+      // eachAnswer = { ...eachAnswer, ...userDetailsObj };
+
+      // Object.assign(eachAnswer, userDetailsObj);
+
+      let JSONObj = JSON.parse(JSON.stringify(eachAnswer));
+
+      JSONObj.userDetails = userDetailsOfEachAnswer;
+
+      // Object.defineProperty(
+      //   eachAnswer,
+      //   "userDetails",
+      //   userDetailsOfEachAnswer
+      // );
+
+      answersWithCompleteDetails.push(JSONObj);
+    }
+
+    post.push(answersWithCompleteDetails);
+    data.push(post);
+  }
+
+  if (data) {
+    res.json({
+      msg: "Single user info ret...",
+      data: [data],
+      status: 200,
+    });
+  } else {
+    res.json({
+      msg: "Cannot retrieve all users info.",
+      data: [],
+      status: -1,
+    });
+  }
+});
+
 router.get("/getallspacesonly", async (req, res) => {
   let data = await spaceDB.find({});
   if (data) {
@@ -162,10 +271,34 @@ router.get("/getallspacesonly", async (req, res) => {
 
 router.get("/getFollowers/:spaceSlug", async (req, res) => {
   let data = await spaceDB.find({ slug: req.params.spaceSlug });
+  let followers;
+  if (data && data.length !== 0) followers = data[0].followers;
+  else followers = data;
   if (data) {
     res.json({
       msg: "Spaces followers ret...",
-      data: data[0].followers,
+      data: followers,
+      status: 200,
+    });
+  } else {
+    res.json({
+      msg: "Cannot retrieve spaces info .",
+      data: req.params,
+      status: -1,
+    });
+  }
+});
+
+router.get("/getFollowersWithTime/:spaceSlug", async (req, res) => {
+  let data = await spaceDB.find({ slug: req.params.spaceSlug });
+  let followersWithTime;
+
+  if (data && data.length !== 0) followersWithTime = data[0].followersWithTime;
+  else followersWithTime = data;
+  if (data) {
+    res.json({
+      msg: "Spaces followers ret...",
+      data: followersWithTime,
       status: 200,
     });
   } else {
@@ -237,6 +370,124 @@ router.get("/getspacesbyfollower/:userId", async (req, res) => {
     res.json({
       msg: "Spaces followers ret...",
       data: data,
+      status: 200,
+    });
+  } else {
+    res.json({
+      msg: "Cannot retrieve spaces info .",
+      data: req.params,
+      status: -1,
+    });
+  }
+});
+
+router.get("/getNotificationContents/:userId", async (req, res) => {
+  let allSpaces = await spaceDB.find({});
+  let requiredData = [];
+  // let testing = [];
+
+  for (let eachSpace of allSpaces) {
+    if (eachSpace.followers.includes(req.params.userId)) {
+      let timeofFollowing = eachSpace.followersWithTime[req.params.userId];
+
+      let allQuestionsInSpace = await questionDB.find({
+        spaceName: eachSpace.slug,
+      });
+      // testing.push(allQuestionsInSpace);
+
+      for (let eachQuestion of allQuestionsInSpace) {
+        let eachRequiredData = {};
+        if (eachQuestion.createdAt > timeofFollowing) {
+          eachRequiredData["spaceProfilePic"] = eachSpace.spaceProfilePic;
+          eachRequiredData["spaceName"] = eachSpace.spaceName;
+          eachRequiredData["questionCreatedAt"] = eachQuestion.createdAt;
+          eachRequiredData["questionName"] = eachQuestion.questionName;
+          eachRequiredData["questionSlug"] = eachQuestion.slug;
+          requiredData.push(eachRequiredData);
+        }
+      }
+    }
+  }
+  if (requiredData) {
+    res.json({
+      msg: "Notifications content ret...",
+      data: requiredData,
+      status: 200,
+    });
+  } else {
+    res.json({
+      msg: "Cannot retrieve spaces info .",
+      data: req.params,
+      status: -1,
+    });
+  }
+});
+
+router.get("/getFollowingContents/:userId", async (req, res) => {
+  let allSpaces = await spaceDB.find({});
+  let requiredData = [];
+
+  for (let eachSpace of allSpaces) {
+    if (eachSpace.followers.includes(req.params.userId)) {
+      let allQuestionsOfEachSpace = await questionDB.find({
+        spaceName: eachSpace.slug,
+      });
+
+      for (let eachQuestionOfEachSpace of allQuestionsOfEachSpace) {
+        let post = [];
+        let questionArr = [];
+
+        questionArr.push(eachQuestionOfEachSpace);
+
+        let userIdOfEachQuestion = eachQuestionOfEachSpace.user.uid;
+        let userDetailsOfEachQuestion = await userDetailsDB.findOne({
+          "user.uid": userIdOfEachQuestion,
+        });
+
+        questionArr.push(userDetailsOfEachQuestion);
+
+        post.push(questionArr);
+
+        let idOfQuestion = eachQuestionOfEachSpace._id;
+        let answers = await answerDB.find({ questionId: idOfQuestion });
+
+        let answersWithCompleteDetails = [];
+        for (let i = 0; i < answers.length; i++) {
+          let eachAnswer = answers[i];
+
+          let userIdOfEachAnswer = answers[i].user.uid;
+          let userDetailsOfEachAnswer = await userDetailsDB.findOne({
+            "user.uid": userIdOfEachAnswer,
+          });
+          // eachAnswer["userDetails"] = userDetailsOfEachAnswer;
+          let userDetailsObj = { userDetails: userDetailsOfEachAnswer };
+          // eachAnswer = { ...eachAnswer, ...userDetailsObj };
+
+          // Object.assign(eachAnswer, userDetailsObj);
+
+          let JSONObj = JSON.parse(JSON.stringify(eachAnswer));
+
+          JSONObj.userDetails = userDetailsOfEachAnswer;
+
+          // Object.defineProperty(
+          //   eachAnswer,
+          //   "userDetails",
+          //   userDetailsOfEachAnswer
+          // );
+
+          answersWithCompleteDetails.push(JSONObj);
+        }
+
+        post.push(answersWithCompleteDetails);
+        requiredData.push(post);
+      }
+    }
+  }
+
+  if (requiredData) {
+    res.json({
+      msg: "Notifications content ret...",
+      data: [requiredData],
       status: 200,
     });
   } else {

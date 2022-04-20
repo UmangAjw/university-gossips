@@ -5,12 +5,14 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signInWithPopup,
+  sendEmailVerification,
 } from "firebase/auth";
-import { auth, provider } from "../../Firebase";
+import { auth, provider, facebookProvider } from "../../Firebase";
 import CloseIcon from "@material-ui/icons/Close";
 import { Modal } from "react-responsive-modal";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 function Login() {
   const [register, setRegister] = useState(true);
@@ -20,6 +22,7 @@ function Login() {
   const [error, setError] = useState("");
   const [referredBy, setReferredBy] = useState([]);
   const { username } = useParams();
+  const history = useHistory();
 
   const isMounted = true;
 
@@ -53,7 +56,7 @@ function Login() {
   // const [userBio, setUserBio] = useState("");
   // const close = <CloseIcon />;
 
-  console.log("Username", username);
+  // console.log("Username", username);
   const toggleNewUser = () => {
     setRegister(!register);
     document.querySelector(
@@ -62,43 +65,105 @@ function Login() {
     document.querySelector(".email-error").style.display = `none`;
   };
 
-  const googleSignIn = () => {
-    signInWithPopup(auth, provider).then((res) => {
-      console.log("Successfully signed in with Google", res);
-      window.location.href =
-        username && referredBy && referredBy.username
-          ? "/firstTimeLogin/referred-by/" + username
-          : "/";
-    });
+  const googleSignIn = async () => {
+    let userCredential = await signInWithPopup(auth, provider)
+      .then((userCredential) => {
+        console.log("Successfully signed in with Google", userCredential);
+        // return userCredential;
+        window.location.href =
+          username && referredBy && referredBy.username
+            ? "/firstTimeLogin/referred-by/" + username
+            : "/";
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+    // if (userCredential.providerId === "facebook.com") {
+    //   alert(`${email} account already exists with Facebook.`);
+    // }
   };
 
-  const userRegister = (e) => {
+  const facebookSignIn = async () => {
+    let userCredential = await signInWithPopup(auth, facebookProvider)
+      .then((userCredential) => {
+        console.log("Successfully signed in with Facebook", userCredential);
+        // return userCredential;
+        window.location.href =
+          username && referredBy && referredBy.username
+            ? "/firstTimeLogin/referred-by/" + username
+            : "/";
+      })
+      .catch((e) => {
+        console.log(e);
+        if (e.code === "auth/account-exists-with-different-credential") {
+          alert(`This account already exists with Google.`);
+          window.location.href =
+            username && referredBy && referredBy.username
+              ? "/firstTimeLogin/referred-by/" + username
+              : "/";
+        }
+      });
+    // if (userCredential.providerId === "google.com") {
+    // }
+  };
+
+  const userRegister = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
+
+    let flag = 1;
+    // let noWhiteEmail = email.replace(/^\s+|\s+$/g, "");
+    // setEmail(noWhiteEmail);
+
+    let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    let emailCheck = emailRegex.test(email);
+    console.log(emailCheck);
+
     if (document.querySelector(".pwd-error")) {
       document.querySelector(".pwd-error").style.display = `block`;
     }
     if (document.querySelector(".email-error")) {
       document.querySelector(".email-error").style.display = `block`;
     }
-    if (email === "" || password === "") {
+
+    if (!emailCheck) {
+      flag = 0;
+      document.querySelector(".email_auth_check").style.display = "block";
+    }
+
+    if (email === "") {
       setError("Required field is missing");
       setLoading(false);
       const ugossips_emailEl = document.querySelector("#ugossips_email");
       ugossips_emailEl.style.borderColor = "red";
+    } else if (password === "") {
+      setError("Required field is missing");
+      setLoading(false);
       const ugossips_pwdEl = document.querySelector("#ugossips_pwd");
       ugossips_pwdEl.style.borderColor = "red";
     } else {
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((res) => {
+      let userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      )
+        .then(async (userCredential) => {
           setLoading(false);
-          console.log("Successfully registered with email and password", res);
-
-          window.location.href =
-            username && referredBy && referredBy.username
-              ? "/firstTimeLogin/referred-by/" + username
-              : "/firstTimeLogin";
+          console.log(
+            "Successfully registered with email and password",
+            userCredential
+          );
+          alert(
+            `We have sent an email to ${email}. Please use that link to verify and then try logging in.`
+          );
+          return userCredential;
+          // auth.signOut();
+          // window.location.href =
+          //   username && referredBy && referredBy.username
+          //     ? "/firstTimeLogin/referred-by/" + username
+          //     : "/firstTimeLogin";
         })
         .catch((err) => {
           if (err.code === "auth/email-already-in-use") {
@@ -112,6 +177,24 @@ function Login() {
           console.log(error);
           setLoading(false);
         });
+
+      if (userCredential && Object.keys(userCredential).length !== 0) {
+        await sendEmailVerification(userCredential.user);
+
+        let interval = setInterval(async () => {
+          if (userCredential.user.emailVerified) {
+            clearInterval(interval);
+            let redirect_url =
+              username && referredBy && referredBy.username
+                ? "/firstTimeLogin/referred-by/" + username
+                : "/firstTimeLogin";
+            console.log(redirect_url);
+            // history.push(redirect_url);
+            window.location.href = redirect_url;
+          }
+          await userCredential.user.reload();
+        }, 1000);
+      }
     }
   };
 
@@ -119,17 +202,36 @@ function Login() {
     e.preventDefault();
     setError("");
     setLoading(true);
+
+    let flag = 1;
+    // let noWhiteEmail = email.replace(/^\s+|\s+$/g, "");
+    // setEmail(noWhiteEmail);
+
+    let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    let emailCheck = emailRegex.test(email);
+
     if (document.querySelector(".pwd-error"))
       document.querySelector(".pwd-error").style.display = `block`;
     if (document.querySelector(".email-error"))
       document.querySelector(".email-error").style.display = `block`;
-    if (email === "" || password === "") {
-      const ugossips_emailEl = document.querySelector("#ugossips_email");
-      ugossips_emailEl.style.borderColor = "red";
-      const ugossips_pwdEl = document.querySelector("#ugossips_pwd");
-      ugossips_pwdEl.style.borderColor = "red";
+
+    if (!emailCheck) {
+      flag = 0;
+      document.querySelector(".email_auth_check").style.display = "block";
+    }
+
+    // if (flag && noWhiteEmail !== "") {
+    if (email === "") {
       setError("Required field is missing");
       setLoading(false);
+      const ugossips_emailEl = document.querySelector("#ugossips_email");
+      ugossips_emailEl.style.borderColor = "red";
+    } else if (password === "") {
+      setError("Required field is missing");
+      setLoading(false);
+      const ugossips_pwdEl = document.querySelector("#ugossips_pwd");
+      ugossips_pwdEl.style.borderColor = "red";
     } else {
       signInWithEmailAndPassword(auth, email, password)
         .then((res) => {
@@ -153,6 +255,13 @@ function Login() {
           setLoading(false);
         });
     }
+    // }
+    // else {
+    //   setLoading(false);
+
+    //   alert("Please enter valid email");
+    //   window.location.href = "/";
+    // }
   };
 
   return (
@@ -180,7 +289,7 @@ function Login() {
                     />
                     &nbsp; Continue with Google
                   </div>
-                  <div className="login-facebook">
+                  <div onClick={facebookSignIn} className="login-facebook">
                     <img
                       src="/img/facebook-logo.png"
                       className="facebook-logo"
@@ -233,6 +342,9 @@ function Login() {
                             document.querySelector(
                               ".email-error"
                             ).style.display = `none`;
+                            document.querySelector(
+                              ".email_auth_check"
+                            ).style.display = "none";
                           }}
                           type="email"
                           name="ugossips_email"
@@ -242,6 +354,9 @@ function Login() {
                           {error === "auth/email-already-in-use"
                             ? "Account already exists with that e-mail address."
                             : ""}
+                        </p>
+                        <p className="email_auth_check first_time_login_error">
+                          Please enter valid email
                         </p>
                       </div>
 
@@ -311,6 +426,9 @@ function Login() {
                             document.querySelector(
                               ".email-error"
                             ).style.display = `none`;
+                            document.querySelector(
+                              ".email_auth_check"
+                            ).style.display = "none";
                           }}
                           type="email"
                           name="ugossips_email"
@@ -322,6 +440,9 @@ function Login() {
                             : error === "auth/user-not-found"
                             ? "No account found for this email."
                             : ""}
+                        </p>
+                        <p className="email_auth_check first_time_login_error">
+                          Please enter valid email
                         </p>
                       </div>
                       <div className="login-pwd">
@@ -355,13 +476,13 @@ function Login() {
                         </p>
                       </div>
                       <div className="login-right-last">
-                        <a
+                        {/* <a
                           disabled="disabled"
                           href="#"
                           className="login-forget"
                         >
                           Forgot Password?
-                        </a>
+                        </a> */}
                         <Button
                           disabled={loading}
                           onClick={emailSignIn}
@@ -376,9 +497,21 @@ function Login() {
               </div>
             </div>
             <div className="login-footer">
-              <a href="#">About</a>&nbsp;-&nbsp;<a href="#">Terms</a>
+              <NavLink target="_top" to="/about">
+                About
+              </NavLink>
               &nbsp;-&nbsp;
-              <a href="#">Privacy</a>&nbsp;-&nbsp;<a href="#">Acceptable Use</a>
+              <NavLink target="_top" to="/terms">
+                Terms
+              </NavLink>
+              &nbsp;-&nbsp;
+              <NavLink target="_top" to="/privacy">
+                Privacy
+              </NavLink>
+              &nbsp;-&nbsp;
+              <NavLink target="_top" to="/acceptable-use">
+                Acceptable Use
+              </NavLink>
             </div>
           </div>
         </div>

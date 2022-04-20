@@ -1,7 +1,6 @@
 .widgetItem {
   display: flex;
   padding: 10px 15px;
-  cursor: pointer;
   /* height: 100%; */
   border-bottom: 1px solid var(--border-color);
 }
@@ -22,3 +21,5 @@
 .widgetItem:hover {
   background-color: var(--hover-color);
 }
+
+

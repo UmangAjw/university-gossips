@@ -17,7 +17,7 @@ function GossipBox() {
       await axios
         .get("/api/userDetails/getuserbyid/" + user.uid)
         .then((res) => {
-          console.log(res.data.data);
+          // console.log(res.data.data);
           setUserDetails(res.data.data);
         })
         .catch((e) => {

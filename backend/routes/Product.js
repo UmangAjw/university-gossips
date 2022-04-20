@@ -46,6 +46,28 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.delete("/deletebyid/:productId", async (req, res) => {
+  productDB.deleteOne({ _id: req.params.productId }, (err, data) => {
+    if (err) {
+      res.json({ data: err, msg: "SMW", status: -1 });
+    } else {
+      if (data.deletedCount == 0) {
+        res.json({
+          data: req.params,
+          msg: "Invalid product id!",
+          status: 200,
+        });
+      } else {
+        res.json({
+          data: data,
+          msg: "Product Deleted Successfully!",
+          status: 200,
+        });
+      }
+    }
+  });
+});
+
 router.post(
   "/uploadproductprofilepic",
   upload.single("image"),

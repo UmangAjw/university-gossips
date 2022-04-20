@@ -143,6 +143,7 @@
 .post_more_btn {
   display: flex;
   padding: 2px 2px;
+  margin-left: 10px;
   background-color: var(--btn-bg-color);
   border-radius: 50%;
   cursor: pointer;
