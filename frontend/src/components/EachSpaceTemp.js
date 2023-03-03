@@ -377,8 +377,8 @@ function EachSpaceTemp() {
             ) : (
               <div className="eachspace-emptyzone">
                 <EmptyZone
-                  heading1={"No answers here"}
-                  heading2={"Please add some answers to view over here."}
+                  heading1={"No questions here"}
+                  heading2={"Please add some questions to view over here."}
                 />
               </div>
             )}

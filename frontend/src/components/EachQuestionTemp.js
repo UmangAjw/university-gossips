@@ -55,13 +55,14 @@ function EachQuestionTemp(props) {
   const open = Boolean(anchorEl);
   const idPopper = open ? "simple-popper" : undefined;
 
-  useEffect(() => {
+  useEffect(async () => {
     if (isMounted) {
-      axios
+      await axios
         .get("/api/questions/findbyslug2/" + slug)
         .then((res) => {
+          console.log(res.data.data);
           setQuestion(res.data.data);
-          if(res.data.data[0].length === 0) window.location.href='/page-404'
+          if (res.data.data[0].length === 0) window.location.href = "/page-404";
         })
         .catch((e) => {
           console.log(e);
@@ -90,7 +91,7 @@ function EachQuestionTemp(props) {
             {question && question[0] && question[0][0] !== undefined
               ? Object.values(question[0]).map((postdata, i) => (
                   <React.Fragment key={i}>
-                    {postdata[0][0].questionType ? (
+                    {
                       <PostForEachUser
                         key={i}
                         // postProfilePic={postdata.postProfilePic}
@@ -106,9 +107,7 @@ function EachQuestionTemp(props) {
                         postSlug={postdata[0][0].slug}
                         from={"EachQuestionTemp"}
                       />
-                    ) : (
-                      ""
-                    )}
+                    }
                   </React.Fragment>
 
                   // <div>
